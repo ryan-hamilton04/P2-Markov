@@ -1,6 +1,9 @@
-# P3: Markov Part 2, Spring 2022
+# Project 3: Markov Part 2, Spring 2022
 
-- [Project Introduction](#project-introduction)
+This is the directions document for Project P2 Markov Part 1 in CompSci 201 at Duke University, Spring 2022. Please follow the directions carefully while you complete the project. Please refer to the directions at https://coursework.cs.duke.edu/201spring22/p3-markov-part-2 rather than any forks or local copies in the event that any changes are made to the document.
+
+
+- [Introduction](#introduction)
     - [High-Level TODOs](#high-level-todos)
     - [Git](#git)
 - [Markov Model and BaseMarkov Explained](#markov-model-and-basemarkov-explained)
@@ -26,53 +29,22 @@
     - [Example Output of WordMarkov](#example-output-of-wordmarkov)
 
 
-## Project Introduction
-<details>
-<summary>Click to Expand</summary>
+## Introduction
 
-The introduction to Markov Part 1 https://coursework.cs.duke.edu/201-public-documentation/P2-Markov-Part-1/-/blob/main/README.md  is appropriate to this project: generating random text using a Markov Model -- you should read that for background.
+This is the second part of [Project P2, Markov Part 1](https://coursework.cs.duke.edu/201spring22/p2-markov-part-1). In part 1, you developed a `WordGram` class to represent an immutable sequence of a given number of words (2-grams, 3-grams, etc.). In part 2 (this part) you will use a generative model to create realistic looking text in a data-driven algorithmic way using a Markov Process. The second version of this generative model uses `WordGram`s as its basic object. You do **not** need to use your own `WordGram` implementaiton for this part, we have provided a complete implementation in the starter code for this project.
 
-In this assignment, you'll be given a program that generates text using a Markov Model. You'll fork and clone the Git repository accessible via https://coursework.cs.duke.edu/201fall21/P3-markov-part2/-/tree/main. You'll do three things to complete this assignment:
 
-1. Create a more efficient version of the `BaseMarkov` class by inheritance/extension. The new class is named `EfficientMarkov`. You're given a shell .java file for this class.
-2. Create a similar more efficient class named `EfficientWordMarkov` of a provided program that uses words rather than characters. This program will leverage your `WordGram` class from Markov Part 1. You're given a working version of `WordGram` but no starter file for `EfficientWordMarkov`.
-3. Develop and run benchmark tests comparing the base, inefficient class with the more efficient class you developed. You'll answer questions based on the benchmarks you run. Answer these questions and submit to Gradescope as a separate analysis assignment for P3: Efficient Markov Analysis.
-</details>
+### Project workflow
+You must have installed all software (Java, Git, VS Code) before you can complete the project.You can find the [directions for installation here](https://coursework.cs.duke.edu/201-public-documentation/resources-201/-/blob/main/installingSoftware.md).
 
-## High Level TODOS
-<details>
-<summary>Click to Expand</summary>
+We'll be using Git and the installation of GitLab at [coursework.cs.duke.edu](https://coursework.cs.duke.edu). All code for classwork will be kept here. Git is software used for version control, and GitLab is an online repository to store code in the cloud using Git.
 
-Fork and clone the project. Then run the `MarkovDriver` program and verify its output matches the output given below. Then run the JUnit tests in `MarkovTest`, adding the JUnit library to your project if necessary.
+**[This document details the workflow](https://coursework.cs.duke.edu/201-public-documentation/resources-201/-/blob/main/projectWorkflow.md) for downloading the starter code for the project, updating your code on coursework using Git, and ultimately submitting to Gradescope for autograding.** We recommend that you read and follow the directions carefully while working on a project! While coding, we recommend that you periodically (perhaps when completing a method or small section) push your changes as explained in Section 5.
 
-Read about the differences between Base and Efficient methods, these differences are described below and manifest in different implementations of two methods: `setTraining` and `getFollows`. Understand the differences at a high-level and then implement these two methods as part of creating the class `EfficientMarkov`. Run `MarkovDriver` and `MarkovTest` after modifying these to use and test your `EfficientMarkov` class.
 
-Implement the class `EfficientWordMarkov`, modeling it on `BaseWordMarkov` and making an internal map similar to `EfficientMarkov` but using `WordGram` objects as keys rather than strings. Test this implementation by running `MarkovDriver` modifying it to use your `WordGram` markov generating programs.
+## Getting Started with Base Markov and Markov Driver
 
-Submit code to Gradescope. Complete analysis and submit that to Gradescope.
-</details>
-
-## Git
-<details>
-<summary>Click To Expand</summary>
-
-The URL for the code for the coding part of this assignment is: https://coursework.cs.duke.edu/201fall21/P3-markov-part2/-/tree/main. 
-
-Fork, clone, and import the cloned project from the file system. **Be sure to fork first.** Then clone using the SSH URL after using a terminal window to `cd` into your IntelliJ workspace. 
-
-When you make a series of changes you want to 'save', you'll push those changes to your GitLab repository. You should do this after major changes, certainly every hour or so of coding. You'll need to use the standard Git sequence to commit and push to GitLab:
-
-```bash
-git add .
-git commit -m 'a short description of your commit here'
-git push
-```
-</details>
-
-## Markov Model and BaseMarkov Explained
-<details>
-<summary>Click To Expand</summary>
-
+The starter code provides `BaseMarkov` and `MarkovDriver`. You should be able to immediately run ...
 
 You'll create a more efficient version of the class `BaseMarkov` that generates random text using a Markov Model; the new class is named `EfficientMarkov`. You'll need to understand what a Markov Model is, how the `BaseMarkov` class works, and the ideas behind how to create the class `EfficientMarkov`. Your task in this part of the assignment is to create this more efficient class, verify that it works the same as the inefficient `BaseMarkov` class, and analyze the performance using a benchmarking program. To do this you'll need to understand how `BaseMarkov` works, how to make it more efficient using maps, and how the benchmarking program leverages inheritance and interfaces to run.
 
