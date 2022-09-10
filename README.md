@@ -1,209 +1,201 @@
 # Project 3: Markov Part 2, Spring 2022
 
-This is the directions document for Project P2 Markov Part 1 in CompSci 201 at Duke University, Spring 2022. Please follow the directions carefully while you complete the project. Please refer to the directions at https://coursework.cs.duke.edu/201spring22/p3-markov-part-2 rather than any forks or local copies in the event that any changes are made to the document.
+This is the directions document for Project P2 Markov in CompSci 201 at Duke University, Fall 2022. [This document details the workflow](hhttps://coursework.cs.duke.edu/cs-201-fall-22/resources-201/-/blob/main/projectWorkflow.md) for downloading the starter code for the project, updating your code on coursework using Git, and ultimately submitting to Gradescope for autograding.
 
+## Outline
 
-- [Introduction](#introduction)
-    - [High-Level TODOs](#high-level-todos)
-    - [Git](#git)
-- [Markov Model and BaseMarkov Explained](#markov-model-and-basemarkov-explained)
-    - [BaseMarkov](#basemarkov)
-    - [getRandomText](#getrandomtext)
-    - [getRandomText Example](#getrandomtext-example)
-    - [Complexity of BaseMarkov.getRandomText](#complexity-of-basemarkovgetrandomtext)
-- [Designing and Testing EfficientMarkov](#designing-and-testing-efficientmarkov)
-    - [Background on EfficientMarkov](#background-on-efficientmarkov)
-    - [The EfficientMarkov Class](#the-efficientmarkov-class)
-    - [Testing EfficientMarkov](#testing-efficientmarkov)
-- [Overview of Programming: WordMarkov](#overview-of-programming-wordmarkov)
-    - [Implementing EfficientWordMarkov](#implementing-efficientwordmarkov)
-- [Submitting, Analysis, Reflect](#submitting-analysis-reflect)
-    - [Code](#code)
-    - [Analysis](#analysis)
-    - [Reflect](#reflect)
-    - [Grading](#grading)
-- [Appendix](#appendix)
-    - [Assignment FAQ](#assignment-faq)
-    - [Output of MarkovDriver](#output-of-markovdriver)
-    - [What is a Markov Model?](#what-is-a-markov-model)
-    - [Example Output of WordMarkov](#example-output-of-wordmarkov)
-
+TODO
 
 ## Introduction
 
-This is the second part of [Project P2, Markov Part 1](https://coursework.cs.duke.edu/201spring22/p2-markov-part-1). In part 1, you developed a `WordGram` class to represent an immutable sequence of a given number of words (2-grams, 3-grams, etc.). In part 2 (this part) you will use a generative model to create realistic looking text in a data-driven algorithmic way using a Markov Process. The second version of this generative model uses `WordGram`s as its basic object. You do **not** need to use your own `WordGram` implementaiton for this part, we have provided a complete implementation in the starter code for this project.
+Random Markov processes are widely used in Computer Science and in analyzing different forms of data. This project offers an occasionally amusing look at a *generative model* for creating realistic looking text in a data-driven way. To do so, you will implement two classes: First `WordGram` which represents immutable sequences of words, then `HashMarkov` which will be an efficient model for generating random text that uses `WordGram`s and `HashMap`s.
+
+Generative models of the sort you will build are of great interest to researchers in artificial intelligence and machine learning generally, and especially those in the field of *natural language processing* (the use of algorithmic and statistical AI/ML techniques on human language). One recent and powerful example of such text-generation model via statistical machine learning program is the [OpenAI GPT-3](https://openai.com/blog/gpt-3-apps/).
 
 
-### Project workflow
-You must have installed all software (Java, Git, VS Code) before you can complete the project.You can find the [directions for installation here](https://coursework.cs.duke.edu/201-public-documentation/resources-201/-/blob/main/installingSoftware.md).
+### What is a `WordGram`
 
-We'll be using Git and the installation of GitLab at [coursework.cs.duke.edu](https://coursework.cs.duke.edu). All code for classwork will be kept here. Git is software used for version control, and GitLab is an online repository to store code in the cloud using Git.
+You will implement a class called `WordGram` that represents a sequence of words (represented as strings), just like a Java String represents a sequence of characters. Just as the Java String class is an immutable sequence of characters, the `WordGram` class you implement will be an immutable sequence of strings. Immutable means that once a WordGram object has been created, it cannot be modified. You cannot change the contents of a `WordGram` object. However, you can create a new WordGram from an existing `WordGram`.
 
-**[This document details the workflow](https://coursework.cs.duke.edu/201-public-documentation/resources-201/-/blob/main/projectWorkflow.md) for downloading the starter code for the project, updating your code on coursework using Git, and ultimately submitting to Gradescope for autograding.** We recommend that you read and follow the directions carefully while working on a project! While coding, we recommend that you periodically (perhaps when completing a method or small section) push your changes as explained in Section 5.
+The number of strings contained in a `WordGram` is sometimes called the *order* of the WordGram, and we sometimes call the `WordGram` an *order-k* WordGram, or a *k-gram* -- the term used in the Markov program you'll implement for Part 2.  You can expand below to see some examples of order-3 `WordGram` objects.
 
-
-## Getting Started with Base Markov and Markov Driver
-
-The starter code provides `BaseMarkov` and `MarkovDriver`. You should be able to immediately run ...
-
-You'll create a more efficient version of the class `BaseMarkov` that generates random text using a Markov Model; the new class is named `EfficientMarkov`. You'll need to understand what a Markov Model is, how the `BaseMarkov` class works, and the ideas behind how to create the class `EfficientMarkov`. Your task in this part of the assignment is to create this more efficient class, verify that it works the same as the inefficient `BaseMarkov` class, and analyze the performance using a benchmarking program. To do this you'll need to understand how `BaseMarkov` works, how to make it more efficient using maps, and how the benchmarking program leverages inheritance and interfaces to run.
-
-An order-k Markov model uses strings of k-letters to predict text, these are called *k-grams*. It's also possible to use k-grams that are composed of words rather than letters. An order-2 Markov model uses two-character strings or *bigrams* to calculate probabilities in generating random letters. A string called the *training text* is used to calculate these probabilities. For more on this model, see the [appendix](#appendix), or see the example in the next section.
-
-
-### BaseMarkov
 <details>
-<summary>Click To Expand</summary>
+<Summary>Expand to see examples of order-3 `WordGram`s</summary>
 
-`BaseMarkov` provides simple implementations of the methods defined in the interface `MarkovInterface`. The important methods that will change to make the class more efficient are `setTraining` and `getFollows`. You'll `@Override` these methods when creating `EfficientMarkov`, but otherwise rely on inherited methods from `BaseMarkov`.
-</details>
+| | | |
+| --- | --- | --- |
+| "cat" | "sleeping" | "nearby" |
+| | | |
 
-### getRandomText
+and 
+| | | |
+| --- | --- | --- |
+| "chocolate" | "doughnuts" | "explode" |
+| | | |
+
+</details> 
+
+### What is a Markov Model?
+
+TODO: Update to refer to `WordGram`s instead of characters
+
+An order-k Markov model uses strings of k characters to predict text: we call these *k-grams*. An order-2 Markov model uses two-character strings or *bigrams* to calculate probabilities in generating random letters. A string called the *training text* is used to calculate these probabilities. We walk through an example calculating the probabilities in the expandable section below. One can also use k-grams that are composed of words rather than letters. We use `WordGram` objects to represent these, but the logic is the same as that shown in the expandable section below, just for words instead of characters.
+
 <details>
-<summary>Click To Expand</summary>
+<summary>Expand for example calculation of probabilities</summary>
 
+For example, suppose that in the text we're using for generating random letters, the so-called training text, using an order-2 Markov model, the bigram `"th"` is followed 50 times by the letter `"e"`, 20 times by the letter `"a"`, and 30 times by the letter `"o"`, because the sequences `"the"`, `"tha"`, and `"tho"` occur 50, 20, and 30 times, respectively while there are no other occurrences of `"th"` in the text we're modeling. This suggests that random text that *looks similar to the training text* should most often have an `e` after `th`, and should have an `a` or `o` following with somewhat lower frequency.
 
-The method we want to optimize to be more efficient is method `getRandomText()`. At a high level, the method works as follows (the exact code for `BaseMarkov.getRandomText()` is provided below). 
+Concretely, while generating random text using an order-2 Markov process suppose we generate the bigram `"th"` --- then based on this bigram we must generate the next random character using the order-2 model. The next letter will be an 'e' with a probability of 0.5 (50/100); will be an 'a' with probability 0.2 (20/100); and will be an 'o' with probability 0.3 (30/100). If 'e' is chosen, then the next bigram used to calculate random letters will be `"he"` since the last part of the old bigram is combined with the new letter to create the next bigram used in the Markov process.
 
-- Choose a random substring of `k` characters `current` from the text of length *N*:
-- Repeat the following sequence of steps (with a `for` loop) up to the desired length *T*:
-    - Get a list of all the characters in the training text that follow `current`
-    - Choose one of those characters at random
-    - If this character is `PSEUDO_EOS`
-        - stop generating new text and `break` out of the `for` loop.
-    - Otherwise,
-        - Take the last *k*-1 characters of `current` and append this character onto the end of `current`.
-
-
-</details>
-
-### getRandomText Example
-<details>
-<summary>Click To Expand</summary>
-
-Here is an example of how the algorithm works. Suppose we're using an order 3-gram (i.e., k=3) and the training text for generating characters is 
-
-***"then five of these themes were themes were thematic in my theatre"***
-
-Then the algorithm would proceed as follows:
-
-- Choose a 3-letter substring from the text at random as the starting current 3-gram. This happens in method `BaseMarkov.getRandomText()` before the for-loop.
-- Suppose this text referenced in `current` on line 56 is "the". These three characters are the start of the random text generated by the Markov model. In the loop above, the method `.getFollows(current)` is called on line 60. This method returns a list of all the characters that follow `current`, or "the", in the training text. This is `{"n", "s", "m", "m", “m", "a"}` in the text above -- look for each occurrence of "the" and see the character that follows to understand this returned list.
-- One of these characters is chosen at random, is appended to `sb` as part of the randomly generated text, and then `current` is changed to drop the first character and add the last character. So if `"m"` is chosen at random (and it's more likely to be since there are two m's) the String `current` becomes `"hem"`.
-- The loop iterates again and `"hem"` is passed to `getFollows()` -- the returned list will be `{"e", "e", "a"}`. The process continues until the designated number of random characters has been generated.
-- In the example above if the string `"tre"` is chosen as the initial value of `current`, or becomes the value of `current` as text is generated, then there is no character that follows. In this case `getFollows("tre")` would return `{PSEUDO_EOS}` where the character `PSEUDO_EOS` is defined as the empty string. The loop in `getRandomText` breaks when `PSEUDO_EOS` is found -- ***this is an edge case and the designated number of random characters will not be generated.***
+Rather than using probabilities explicitly, your code will use them implicitly. You'll store 50 occurrences of `"e"`, 20 occurrences of `"a"` and 30 occurrences of `"o"` in an `ArrayList`. You'll then choose one of these at random. This will replicate the probabilities, e.g., of 0.3 for `"o"` since there will be 30 `"o"` strings in the 100-element `ArrayList`.
 
 </details>
 
-### Complexity of BaseMarkov.getRandomText
 <details>
-<summary>Click To Expand</summary>
+<summary>Historical details of this assignment (optional)</summary>
 
-
-As explained in the previous section, generating each random character requires scanning the entire training text to find the following characters when `getFollows` is called. Generating `T` random characters will call `getFollows` `T` times. Each time the entire text is scanned. If the text contains `N` characters, then generating `T` characters from a training text of size `N` is an O(`NT`) operation - meaning that the running time scales with the product of `N` and `T`.
+This assignment has its roots in several places: a story named _Inflexible Logic_ now found in pages 91-98 from [_Fantasia Mathematica (Google Books)_](http://books.google.com/books?id=9Xw8tMEmXncC&printsec=frontcover&pritnsec=frontcover#PPA91,M1) and reprinted from a 1940 New Yorker story called by Russell Maloney. 
+The true mathematical roots are from a 1948 monolog by Claude Shannon, [A Mathematical Theory of Communication](https://docs.google.com/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxtaWNyb3JlYWRpbmcxMmZhbGx8Z3g6MThkYzkwNzcyY2U5M2U5Ng) which discusses in detail the mathematics and intuition behind this assignment. This assignment has its roots in a Nifty Assignment designed by Joe Zachary from U. Utah, assignments from Princeton designed by Kevin Wayne and others, and the work done at Duke starting with Owen Astrachan and continuing with Jeff Forbes, Salman Azhar, Branodn Fain, and the UTAs from Compsci 201.
 </details>
 
+ 
+## Coding Part 1: Developing the `WordGram` Class
+
+You'll construct a `WordGram` object by passing as constructor arguments: an array, a starting index, and the size (or order) of the `WordGram.` You'll **store the strings in an array instance variable** by copying them from the array passed to the constructor.
+
+### Getting Started
+You're given an outline of `WordGram.java` with stub (unimplemented) methods and a stub constructor. Your task will be to implement these methods in `WordGram` according to the specifications detailed below. In particular, you should implement the following
+
+- The constructor `WordGram(String[] words, int index, int size)`
+- `toString()`
+- `hashCode()`
+- `equals(Object other)`
+- `length()`
+- `shiftAdd(String last)`
+
+There is also a `wordAt()` method, but it is already completed, you do not need to edit this method.
+
+For `hashCode`, `equals`, and `toString`, your implementations should conform to the specifications as given in the [documentation for `Object`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html). As you develop, you will test your implementation using the *JUnit* tests in `WordGramTest`. 
+
+Before you start coding, be sure you can run the `SimpleWordGramDriver`. The output (before you have done anything to `WordGram` should be similar to what's shown below.
+```
+gram = null, length = 0, hash = 0
+gram = null, length = 0, hash = 0
+```
+Note that VS Code displays duplicate lines by printing out one line with a number to the side. So if you got similar to
+```
+(2) gram = null, length = 0, hash = 0
+```
+then that matches the above output.
+
+
+### Implementing `WordGram` Constructor, `toString`, and `hashCode`
+
+The first three methods you should implement are the constructor, `.toString()`, and `.hashCode()`. Once you have completed these, you can again run program `SimpleWordGramDriver`; you should get different output - in particular the first line should now be
+```
+gram = Computer Science is fun, length = 4, hash = 52791914
+```
+
+You are also provided with [JUnit tests](#junit-tests) that you can use to test your implementation. Expand the following sections for details on each of these methods.
+
+<details>
+<summary>Implement the Constructor</summary>
+
+There are three instance variables in `WordGram`:
+```
+private String[] myWords;
+private String myToString;
+private int myHash;
+```
+
+The constructor for WordGram `public WordGram(String[] source, int start, int size)`
+should store `size` strings from the array `source`, starting at index `start` (of `source`) into the private `String` array instance variable `myWords` of the `WordGram` class. The array `myWords` should contain exactly `size` strings. 
+
+For example, suppose parameter `words` is the array below, with "this" at index 0.
+
+| | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- |
+| "this" | "is" | "a" | "test" |"of" |"the" |"code" |
+| | | | | | |
+
+The call `new WordGram(words,3,4)` should create this array `myWords` since the starting index is the second parameter, 3, and the size is the third parameter, 4.
+
+| | | | |
+| --- | --- | --- | --- |
+| "test" | "of" | "the" | "code"|
+| | | | |
+
+You do not need to change the default values assigned to the instance variables `myToString` and `myHash` in the constructor stub; these will change when you implement the methods `.toString()` and `.hashCode()`, respectively.
 </details>
 
-## Designing and Testing EfficientMarkov
+
 <details>
-<summary>Click To Expand</summary>
+<summary>Implement and override toString()</summary>
 
-You'll need to design, develop, test, and benchmark the new class. You'll create this class and make it extend `BaseMarkov` thus inheriting all its methods and protected instance variables. You'll need to create two constructors, see `BaseMarkov` for details. You'll inherit all the methods of `BaseMarkov` and you'll need to `@Override` two of them: `setTraining` and `getFollows` as described below.  The other methods and instance variables are simply inherited.
+The `toString()` method (on line 84) should return a printable `String` representing all the strings stored in the `WordGram` instance variable `myWords`, each separated by a single blank space (that is, `" "`).
 
-### Background on EfficientMarkov
-<details>
-<summary>Click To Expand</summary>
-
-Calling `BaseMarkov.getFollows` requires looping over the training text of size *N*. In the class `EfficientMarkov`, you'll improve the efficiency of `EfficientMarkov.getFollows` by making it a constant time operation. In order to accomplish this, you'll need to create and initialize a `HashMap` instance variable used in `getFollows`. 
-
-This means that in `EfficientMarkov`, we will scan through the training text of size *N* once before generating *T* random characters by calling `getFollows` *T* times.This makes `EfficientMarkov` text generation an O(*N*+*T*) operation instead of the O(*NT*) for `BaseMarkov` - that is, the running time scales with the sum of *N* and *T* instead of the product. We call this linear growth instead of quadratic.
-
-Instead of rescanning the entire text of *N* characters as in `BaseMarkov`, you'll write code to store each unique k-gram as a key in the instance variable `myMap`, with the characters/single-char strings that follow the k-gram in a list associated as the value of the key. This will be done in the overridden method `EfficientMarkov.setTraining`. In the constructor, you'll create an instance variable `myMap` and fill it with keys and values in the method `EfficientMarkov.setTraining`.
-
-**The keys in `myMap` are k-grams in a k-order Markov model**. Suppose we're creating an order-3 Markov Model and the training text is the string `"bbbabbabbbbaba"`. Each different k-gram in the training text will be a key in the map (e.g. `"bbb"`). **The value associated with each k-gram key is a list of single-character strings that follow the key in the training text (e.g. {`"a"`, `"a"`, `"b"`})**.  *Your map will have Strings as keys and each key will have an `ArrayList<String>` as the corresponding value.*
-
-Let’s consider other 3-grams in the training text. The 3-letter string `"bba"` occurs three times, each time followed by `'b'`. The 3-letter string `"bab"` occurs three times, followed twice by `'b'` and once by `'a'`. 
-
-What about the 3-letter string `"aba"`? It only occurs once, and it occurs at the end of the string, and thus is not followed by any characters. So, if our 3-gram is ever `"aba"` we will always end the text with that 3-gram. Suppose instead, there is one instance of `"aba"` followed by a `'b'` and another instance at the end of the text, then if our current 3-gram was `"aba"` we would have a 50% chance of ending the generation of random text early.
-
-To represent this special case in our structure, we say that `"aba"` here is followed by an end-of-string (EOS) character. This isn't a real character, but a special String/character we'll use to indicate that the process of generating text is over.***While generating text, if we randomly choose the end-of-string character to be our next character, then instead of actually adding a character to our text, we simply stop generating new text and return whatever text we currently have.*** For this assignment, to represent an end-of-string character you'll use the static constant `PSEUDO_EOS` – see `MarkovModel.getRandomText` method for how this constant is used when generating random text.
-
-</details>
-
-
-### Constructors in EfficientMarkov
-<details>
-<summary>Click To Expand</summary>
-
-One constructor has the order of the markov model as a parameter and the other,default constructor calls `this(3)` to set the order to three. The parameterized constructor you write will first call `super(order)` to initialize inherited state --- you'll then initialize the instance variable `myMap` to a `HashMap`. 
-
-</details>
-
-### Building myMap in setTraining
-<details>
-<summary>Click To Expand</summary>
-
-You must set `myText` to the parameter text as the first line in your new `setTraining` implementation. You can do this directly, or by calling `super.setTraining(text)`.
-
-For `getFollows` to function correctly, even the first time it is called, you'll clear and initialize the map when the overridden method `setTraining` method is called. At the beginning of your method, after setting the value of `myText`, write `myMap.clear()` to accomplish this.
-
-Implement the method according to the background. As a refresher, here are the list of steps you need to complete:
-
-The map will be constructed in the parameterized constructor and keys/values added in this method. To continue with the previous example, suppose we're creating an order-3 Markov Model and the training text is the string `"bbbabbabbbbaba"`.
-
-| Key | List of Values |
-| ---- | ------        |
-| `"bbb"` | `{"a", "b", "a"}` |
-| `"bba"` | `{"b", "b", "b"}` |
-| `"bab"` | `{"b", "b", "a"}` |
-| `"abb"` | `{"a", "b"}` |
-| `"aba"` | `{PSEUDO_EOS}` |
-
-
-In processing the training text from left-to-right, e.g., in the method `setTraining`, we see the following 3-grams starting with the left-most 3-gram `“bbb”`. Your code will need to generate every 3-gram in the text as a possible key in the map you'll build. Use the `String.substring()` method to create substrings of the appropriate length, i.e., `myOrder`. In this example the keys/Strings you'll generate are:
-
-`bbb` -> `bba` -> `bab` -> `abb` -> `bba` -> `bab` -> `abb` -> `bbb` -> `bbb` -> `bba` -> `bab` -> `aba`
-
-You'll create these using `myText.substring(index, index+myOrder)` if `index` is accessing all valid indices.
-
-As you create these keys, you'll store them in the map and add each of the following single-character strings to the ArrayList value associated with the 3-gram key.
-
-For example, you'd expect to see these keys and values for the string `"bbbabbabbbbaba"`. The order of the keys in the map isn't known, but for each key the order of the single-character strings should be as shown below -- the order in which they occur in the training text.
-
-</details>
-
-### Method getFollows in EfficientMarkov
-<details>
-<summary>Click to Expand</summary>
-
-This method simply looks up the key in a map and returns the associated value: an `ArrayList` of single-character strings that was created when `setTraining` is called. If the key isn't in the map you should throw an exception, e.g., 
-
-`throw new NoSuchElementException(key+" not in map");`
-
-The code in this version of `getFollows` is constant time because if the key is in the map, the corresponding value is simply returned. The value for each key is set in the method `setTraining`.
-
-</details>
-
-### Testing EfficientMarkov
-<details>
-<summary>Click to Expand</summary>
-
-To test that your code is doing things faster and not differently, you can use the same text file and the same order *k* for k-grams for `EfficientMarkov` model. Simply use an `EfficientMarko`v object rather than a `BaseMarkov` object when running `MarkovDriver`. 
-
-***If you use the same seed in constructing the random number generator used in your new implementation, you should get the same text, but your code should be faster.*** You can use `MarkovDriver` to test this. Do not change the given random seed when testing the program, though you can change it when you'd like to see more humorous and different random text. You can change the seed when you're running the program, **but for testing and for submitting you should use the provided seed 1234.**  
+Don't recompute this `String` each time `toString()` is called -- instead, store the String in instance variable `myToString`. For full credit your code must only call calculate `myToString` the first time `toString()` is called; it should simply return the value stored in `myToString` on subsequent calls (remember `WordGram` is immutable, so it can't change on subsequent calls). To determine whether a given call to `toString()` is the first, you can compare to the default constructor value of `myToString`.
 
 </details>
 
 
-
-### JUnit for EfficientMarkov
 <details>
-<summary>Click to Expand</summary>
+<summary>Implement and override hashCode()</summary>
 
-Use the JUnit tests in the `MarkovTest` class as part of testing your code. ***You will need to change the class being tested that's returned by the method `getModel`***. For discussion on using JUnit tests, see the [section in this document](https://coursework.cs.duke.edu/201-public-documentation/P2-Markov-Part-1/-/blob/main/README.md#junit-tests-explained) on how to run a Java program that uses JUnit tests. You may need to add JUnit 5 to the project -- you can do this by using option-enter and choosing that version of JUnit. On Windows machines use ALT-enter. Alternatively, right click any red text in IntelliJ relating to JUnit, click "Show Context Actions", and select the most recent version of JUnit.
+The `hashCode()` method (on line 67) should return an `int` value based on all the strings in instance variable `myWords`. See the [Java API documentation](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()) for the design constraints to which a `hashCode()` method should conform. 
+
+You will implement `.equals()` later, but we will count two `WordGram` objects as equal if their `myWords` instance variables contain the same String values in the same order. In addition, note that the Java String class already has a good [`.hashCode()` method](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#hashCode()) we can leverage. Use the `.hashCode()` of the String returned by `this.toString()` to implement this method.
+
+Don't recompute the hash value each time `.hashCode()` is called. Similar to `.toString()`, only compute it the first time `.hashCode()` is called, and store the result in the `myHash` instance variable (again noting that it cannot change later since `WordGram` objects are immutable). On subsequent calls, simply return `myHash`. Again you can check whether this is the first call by comparing to the default `myHash` value in the Constructor.
+</details>
+
+
+### Implementing `equals`, `length`, and `shiftAdd`
+
+Next you should implement the remaining three methods of the `WordGram` class. Expand each section below for details.
+
+<details>
+<summary>Implement and override equals()</summary>
+
+The `equals()` method should return `true` when the parameter passed is a `WordGram` object with _**the same strings in the same order**_ as this object. In general, the [Java API specification of `.equals()`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object) takes an `Object` type as input. The starter code provided uses the `instanceof` operator to see if the argument is indeed a `WordGram` and returns `false` if not.
+
+If the parameter `other` is indeed a `WordGram` object then it can and should be cast to a `WordGram`, e.g., like this (you will need to add this to the starter code):
+```
+WordGram wg = (WordGram) other;
+```
+
+Then the strings in the array `myWords` of `wg` can be compared to this object's strings stored in `this.myWords`. Note that `WordGram` objects of different lengths cannot be equal, and your code should check this.
 
 </details>
+
+
+<details>
+<summary>Implement length()</summary>
+
+The `length()` method should return the order or size of the `WordGram` -- this is the number of words stored in the instance variable `myWords`.
+</details>
+
+
+<details>
+<summary>Implement shiftAdd()</summary>
+
+If this `WordGram` has k entries then the `shiftAdd()` method should create and return a _**new**_ `WordGram` object, also with k entries, whose *first* k-1 entries are the same as the *last* k-1 entries of this `WordGram`, and whose last entry is the parameter `last`. Recall that `WordGram` objects are immutable and cannot be modified once created - **this method must create a new WordGram object** and copy values correctly to return back to the user.
+
+For example, if `WordGram w` is 
+| | | |
+| --- | --- | --- |
+| "apple" | "pear" | "cherry" |
+| | | | 
+
+then the method call `w.shiftAdd("lemon")` should return a new `WordGram` containing {"pear", "cherry", "lemon"}. Note that this new `WordGram` will not equal w.
+
+Note: To implement shiftAdd you'll need to create a new `WordGram` object. The code in the method will still be able to assign values to the private instance variables of that object directly since the `shiftAdd()` method is in the `WordGram` class.
+
+</details>
+
+
+
 
 
 
