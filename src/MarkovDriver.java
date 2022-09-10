@@ -1,50 +1,52 @@
 import java.io.File;
-import java.util.Scanner;
-import java.util.*;
 
 /**
  * Driver for Markov Model classes
+ * Uses WordGrams and Markov Model to generate
+ * random text based on a training text. Prints
+ * text and runtime measurements.
+ * For use in Compsci 201, Fall 2022, Duke University
  * @author ola
- * Modified for Fall 2021
+ * @author Brandon Fain
  */
 
 public class MarkovDriver {
 	
-	private static final int TEXT_SIZE = 144;
-	
-	public static void markovGenerate(MarkovInterface<?> markov, String text) {
-		double start = System.nanoTime();
-		for(int k=1; k <= 5; k++) {
-			markov.setOrder(k);
-			markov.resetRandom();
-			markov.setTraining(text);
-			String random = markov.getRandomText(TEXT_SIZE);
-			System.out.printf("%d markov model with %d chars\n", k,random.length());
-			printNicely(random,60);
-		}
-		double end = System.nanoTime();
-		System.out.printf("total time = %2.3f\n", (end-start)/1e9);
-	}
+	private static int TEXT_SIZE = 100;
+	private static long RANDOM_SEED = 1234;
+	private static int MODEL_ORDER = 3;
+	private static boolean PRINT_MODE = true;
 	
 	public static void main(String[] args) {
-
-		String filename = "data/biden-2021.txt";
-
-		if (args.length > 0) {
-			filename = args[1];
-		}
-		
+		// Can change the training text here
+		String filename = "data/alice.txt";
 		File f = new File(filename);
-		String text = TextSource.textFromFile(f);
+		String text = TextSource.textFromFile(f).toLowerCase();
 
 		// only one line below should be uncommented
-		MarkovInterface<String> standard = new BaseMarkov();
-		//MarkovInterface<String> efficient = new EfficientMarkov();
-		//MarkovInterface<WordGram> wmm = new BaseWordMarkov();
-		//MarkovInterface<WordGram> ewm = new EfficientWordMarkov();
+		MarkovInterface generator = new BaseMarkov(MODEL_ORDER);
+		//MarkovInterface generator = new HashMarkov(MODEL_ORDER);
+		
+		generator.setSeed(RANDOM_SEED);
 
-		// first parameter is one of the MarkovInterface variables
-		markovGenerate(standard,text);
+		double beforeTraining = System.nanoTime();
+		generator.setTraining(text);
+		double afterTraining = System.nanoTime();
+		double trainingTimeMS = (afterTraining - beforeTraining)/1e9; 
+		
+
+		double beforeGenerating = System.nanoTime();
+		String random = generator.getRandomText(TEXT_SIZE);
+		double afterGenerating = System.nanoTime();
+		double generatingTimeMS = (afterGenerating - beforeGenerating)/1e9; 
+
+		System.out.printf("\nGenerated %d words with order %d Markov Model\n", TEXT_SIZE, MODEL_ORDER);
+		if (PRINT_MODE) {
+			printNicely(random,80);
+		}
+		System.out.printf("Training time = %2.3f s\n", trainingTimeMS);
+		System.out.printf("Generating time = %2.3f s\n", generatingTimeMS);
+
 	}
 
 	private static void printNicely(String random, int screenWidth) {
@@ -61,4 +63,5 @@ public class MarkovDriver {
 		}
 		System.out.println("\n----------------------------------");
 	}
+
 }

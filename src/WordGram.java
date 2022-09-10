@@ -1,85 +1,97 @@
 /**
- * simple reference solution for Part 2
- * @author ola
- *
+ * A WordGram object represents an immutable
+ * sequence of words.
+ * For use in Compsci 201, Duke University, Fall 2022
+ * Add yourself as an author when you make edits
+ * @author Brandon Fain
  */
-public class WordGram {
-	private String[] myWords;
-	private String myToString;
-	private int myHash;
 
+public class WordGram {
+	private String[] myWords; 	// Stores WordGram words
+	private String myToString;	// Stores space separated words as one string
+	private int myHash;			// Stores hash value of WordGram
+
+	
+	/**
+	 * Constructor should generate a WordGram with size words
+	 * beginning at the start index value of source array.
+	 * Each element of source array should be a single word.
+	 * @param source Source array, each element should be a single word
+	 * @param start Index of first word for WordGram object
+	 * @param size Number of elements in WordGram object
+	 */
 	public WordGram(String[] source, int start, int size) {
-		myWords = new String[size];
-		System.arraycopy(source, start, myWords, 0, size);
+		// TODO correctly implement constructor
+		myWords = new String[]{source[start]};
 	}
 
+
 	/**
-	 * Return word given its index
+	 * Return the word at a given index of WordGram
 	 * @param index of word
-	 * @return string/word[index]
+	 * @return String/word at index position in WordGram
 	 * @throws IndexOutOfBoundsException if index < 0 or index >= length()
 	 */
 	public String wordAt(int index) {
-		if (index < 0 || index >= myWords.length) {
-			throw new IndexOutOfBoundsException("bad index in wordAt "+index);
-		}
-		return myWords[index];
+		// TODO correctly implement wordAt
+		return "";
 	}
+
 
 	/**
-	 * Returns # words in this WordGram
-	 * @return order of wordgram, # words
+	 * Returns number of words in this WordGram
+	 * @return order of wordgram, number of words
 	 */
-	public int length(){
-		return myWords.length;
+	public int length() {
+		// TODO correctly implement length 
+		return 0;
 	}
 
+
+	/** 
+	 * Returns true if o is also a wordgram with the
+	 * same words, otherwise returns false 
+	*/
 	@Override
 	public boolean equals(Object o) {
-		if (! (o instanceof WordGram) || o == null){
-			return false;
-		}
-
-		WordGram other = (WordGram) o;
-		if (this.length() != other.length()) {
-			return false;
-		}
-		for(int k=0; k < myWords.length; k++) {
-			if (! myWords[k].equals(other.wordAt(k))){
-				return false;
-			}
-		}
-		return true;
+		// TODO correctly implement equals
+		return false;
 	}
 
-	@Override
-	public int hashCode(){
-		if (myHash == 0){
-			myHash = toString().hashCode();
-		}
-		return myHash;
-	}
 
 	/**
-	 * Return a new WordGram based on this one and last, new
-	 * WordGram has words[1],2,...,length()-1, and then last.
-	 * @param last added as last string of returned WordGram
-	 * @return new WordGram as specified
+	 * Returns a hashCode for WordGram object equal to 
+	 * the hashCode of the space separated words stored in 
+	 * the WordGram.
 	 */
-	public WordGram shiftAdd(String last) {
-		WordGram wg = new WordGram(myWords,0,myWords.length);
-		for(int k=0; k < wg.myWords.length-1; k++){
-			wg.myWords[k] = wg.myWords[k+1];
-		}
-		wg.myWords[wg.myWords.length-1] = last;
-		return wg;
+	@Override
+	public int hashCode() {
+		// TODO correctly implement hashCode
+		return 0;
 	}
 
+
+	/**
+	 * Return a new WordGram of the same length as this WordGram 
+	 * consisting of words 1 through length-1 of this WordGram
+	 * followed by last. Does NOT mutate this WordGram.
+	 * @param last added as last string of returned WordGram
+	 * Should be a single word
+	 * @return new WordGram
+	 */
+	public WordGram shiftAdd(String last) {
+		// TODO correctly implement shiftAdd
+		return this;
+	}
+
+
+	/**
+	 * Returns space separated words stored in the WordGram
+	 * as a single String.
+	 */
 	@Override
-	public String toString(){
-		if (myToString == null) {
-			myToString = String.join(" ",myWords);
-		}
-		return myToString;
+	public String toString() {
+		// TODO correctly implement toString
+		return "";
 	}
 }
