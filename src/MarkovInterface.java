@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Interface for Markov models for random text generation. 
  * Note that the order of the Markov model would be 
@@ -18,6 +20,16 @@ public interface MarkovInterface {
 	public void setTraining(String text);
 	
 
+	/**
+	 * Get a list of Strings containing all words that follow
+	 * from wgram in the training text. Result may be an empty list.
+	 * @param wgram is a WordGram to search for in the text
+	 * @return List of words following wgram in training text.
+	 * May be empty.
+	 */
+	public List<String> getFollows(WordGram wgram);
+
+	
 	/**
 	 * Get randomly generated text based on the training text.
 	 * Details of how random text is generated are left to the 
