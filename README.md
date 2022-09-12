@@ -44,18 +44,23 @@ and
 
 ### What is a Markov Model?
 
-TODO: Update to refer to `WordGram`s instead of characters
+Markov models are random models with the Markov property. In our case, we want to create a Markov model for generating random text that looks similar to a training text. We will generate one random word at a time, and the Markov property in our context means that the probabilities for that next word will be based on the previous words.
 
-An order-k Markov model uses strings of k characters to predict text: we call these *k-grams*. An order-2 Markov model uses two-character strings or *bigrams* to calculate probabilities in generating random letters. A string called the *training text* is used to calculate these probabilities. We walk through an example calculating the probabilities in the expandable section below. One can also use k-grams that are composed of words rather than letters. We use `WordGram` objects to represent these, but the logic is the same as that shown in the expandable section below, just for words instead of characters.
+An order-k Markov model uses order-k `WordGram`s to predict text: we sometimes call these *k-grams* where *k* refers to the order. To begin, we select a random k-gram from the *training text* (the data we use to create our model; we want to generate random text similar to the training text). Then, we look for instances of that k-gram in the training text in order to calculate the probabilities corresponding to words that might follow. We then generate a new word according to these probabilities, after which we repeat the process using the last k-1 words from the previous k-gram and the newly generated word. Continue in that fashion to create the desired number of random words. Expand below for a concrete example.
 
 <details>
 <summary>Expand for example calculation of probabilities</summary>
 
-For example, suppose that in the text we're using for generating random letters, the so-called training text, using an order-2 Markov model, the bigram `"th"` is followed 50 times by the letter `"e"`, 20 times by the letter `"a"`, and 30 times by the letter `"o"`, because the sequences `"the"`, `"tha"`, and `"tho"` occur 50, 20, and 30 times, respectively while there are no other occurrences of `"th"` in the text we're modeling. This suggests that random text that *looks similar to the training text* should most often have an `e` after `th`, and should have an `a` or `o` following with somewhat lower frequency.
+Suppose we are using an order 2 Markov model with the following training text (located in `testfile.txt`):
 
-Concretely, while generating random text using an order-2 Markov process suppose we generate the bigram `"th"` --- then based on this bigram we must generate the next random character using the order-2 model. The next letter will be an 'e' with a probability of 0.5 (50/100); will be an 'a' with probability 0.2 (20/100); and will be an 'o' with probability 0.3 (30/100). If 'e' is chosen, then the next bigram used to calculate random letters will be `"he"` since the last part of the old bigram is combined with the new letter to create the next bigram used in the Markov process.
+> this is a test. it is only a test. do you think it is a test?
+> this test, it is ok. it is short, but it is ok to be short.
 
-Rather than using probabilities explicitly, your code will use them implicitly. You'll store 50 occurrences of `"e"`, 20 occurrences of `"a"` and 30 occurrences of `"o"` in an `ArrayList`. You'll then choose one of these at random. This will replicate the probabilities, e.g., of 0.3 for `"o"` since there will be 30 `"o"` strings in the 100-element `ArrayList`.
+We begin with a random k-gram, suppose we get `[it, is]`. This appears 5 times in total, and is followed by `only`, `a`, `ok`, `short`, and again by `ok` each of those five times respectively. So the probability (in the training text) that `it is` is followed by `ok` is 2/5 or 40%, and for the other words is 1/5 or 20%. To generate a random word following the 2-gram `[it, is]`, we would therefore choose `ok` with 2/5 probability, or `only`, `a`, or `short` with 1/5 probability each.
+
+Rather than calculating these probabilities explicitly, your code will use them implicitly. In particular, the `getFollows` method will return a `List` of *all* of the words that follow after a given k-gram in the training text (including duplicates), and then you will choose one of these words uniformly at random. Words that more commonly follow will be selected with higher probability by virtue of being duplicated in the `List`.
+
+Of course, for a very small training text these probabilities may not be very meaningful, but random generative models like this can be much more powerful when supplied with large quantities of training data, in this case meaning very large training texts.
 
 </details>
 
