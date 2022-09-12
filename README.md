@@ -81,13 +81,16 @@ TO BE ADDED
 
 Your first task is to develop the `WordGram` class itself. You're given an outline of `WordGram.java` with appropriate instance variables declared, as well as stub (not correctly implemented methods.
 
-Your task will be to implement these methods in `WordGram` according to the specifications provided. Javadocs in the starter code detail the expected behavior of all methods. For `hashCode`, `equals`, and `toString`, your implementations should conform to the specifications as given in the [documentation for `Object`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html). You can expand the sections below to see details about individual methods you need to implement.
+Your task will be to implement these methods in `WordGram` according to the specifications provided. Javadocs in the starter code detail the expected behavior of all methods. For `hashCode`, `equals`, and `toString`, your implementations should conform to the specifications as given in the [documentation for `Object`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html). 
 
-### Constructor 
-You'll construct a `WordGram` object by passing as constructor arguments: an array, a starting index, and the size (or order) of the `WordGram.` You'll **store the strings in an array instance variable** by copying them from the array passed to the constructor.
+Note that `WordGram` objects are *immutable*, meaning they should not change after creation (similar to Java Strings). Therefore, none of the methods except the constructor should *mutate* (or change) the words assosciated with a `WordGram` object.
+
+You can expand the sections below to see details about individual methods you need to implement.
 
 <details>
 <summary>Expand for details on the Constructor</summary>
+
+You'll construct a `WordGram` object by passing as constructor arguments: an array, a starting index, and the size (or order) of the `WordGram.` You'll **store the strings in an array instance variable** by copying them from the array passed to the constructor.
 
 There are three instance variables in `WordGram`:
 ```
@@ -113,59 +116,45 @@ The call `new WordGram(words,3,4)` should create this array `myWords` since the 
 | "test" | "of" | "the" | "code"|
 | | | | |
 
-You do not need to initialize instance variables `myToString` and `myHash` in the constructor stub; these will change when you implement the methods `.toString()` and `.hashCode()`, respectively.
+You can initialize the instance variables `myToString` and `myHash` in the constructor stub to whatever default values you choose; these will change when you implement the methods `.toString()` and `.hashCode()`, respectively.
 </details>
 
-
 <details>
-<summary>Implement and override toString()</summary>
+<summary>Expand for details on wordAt()</summary>
 
-The `toString()` method (on line 84) should return a printable `String` representing all the strings stored in the `WordGram` instance variable `myWords`, each separated by a single blank space (that is, `" "`).
-
-Don't recompute this `String` each time `toString()` is called -- instead, store the String in instance variable `myToString`. For full credit your code must only call calculate `myToString` the first time `toString()` is called; it should simply return the value stored in `myToString` on subsequent calls (remember `WordGram` is immutable, so it can't change on subsequent calls). To determine whether a given call to `toString()` is the first, you can compare to the default constructor value of `myToString`.
+The `wordAt()` method should return the word at the given index in `myWords`. 
 
 </details>
 
-
 <details>
-<summary>Implement and override hashCode()</summary>
+<summary>Expand for details on length()</summary>
 
-The `hashCode()` method (on line 67) should return an `int` value based on all the strings in instance variable `myWords`. See the [Java API documentation](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()) for the design constraints to which a `hashCode()` method should conform. 
-
-You will implement `.equals()` later, but we will count two `WordGram` objects as equal if their `myWords` instance variables contain the same String values in the same order. In addition, note that the Java String class already has a good [`.hashCode()` method](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#hashCode()) we can leverage. Use the `.hashCode()` of the String returned by `this.toString()` to implement this method.
-
-Don't recompute the hash value each time `.hashCode()` is called. Similar to `.toString()`, only compute it the first time `.hashCode()` is called, and store the result in the `myHash` instance variable (again noting that it cannot change later since `WordGram` objects are immutable). On subsequent calls, simply return `myHash`. Again you can check whether this is the first call by comparing to the default `myHash` value in the Constructor.
+The `length()` method should return the order of the `WordGram`, that is, the length of `myWords`. 
 </details>
 
-
-### Implementing `equals`, `length`, and `shiftAdd`
-
-Next you should implement the remaining three methods of the `WordGram` class. Expand each section below for details.
-
 <details>
-<summary>Implement and override equals()</summary>
+<summary>Expand for details on equals()</summary>
 
-The `equals()` method should return `true` when the parameter passed is a `WordGram` object with _**the same strings in the same order**_ as this object. In general, the [Java API specification of `.equals()`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object) takes an `Object` type as input. The starter code provided uses the `instanceof` operator to see if the argument is indeed a `WordGram` and returns `false` if not.
+The `equals()` method should return `true` when the parameter passed is a `WordGram` object with **the same strings in the same order** as this object. 
 
-If the parameter `other` is indeed a `WordGram` object then it can and should be cast to a `WordGram`, e.g., like this (you will need to add this to the starter code):
-```
-WordGram wg = (WordGram) other;
-```
+The [Java API specification of `.equals()`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object) takes an `Object` type as input. Thus, the first thing the `WordGram` `equals()` method should do is check if the parameter passed is really a `WordGram` using the `instanceof` operator, and if not return false. Otherwise, the parameter can be *cast* as a `WordGram`. This is done for you in the starter code and you do not need to change it.
 
-Then the strings in the array `myWords` of `wg` can be compared to this object's strings stored in `this.myWords`. Note that `WordGram` objects of different lengths cannot be equal, and your code should check this.
+Then what you need to do is compare the strings in the array `myWords` of `other` and `this` (the object on which `equals()` is called). Note that `WordGram` objects of different lengths cannot be equal, and your code should check this.
 
 </details>
 
-
 <details>
-<summary>Implement length()</summary>
+<summary>Expand for details on hashCode()</summary>
 
-The `length()` method should return the order or size of the `WordGram` -- this is the number of words stored in the instance variable `myWords`.
+The `hashCode()` method should return an `int` value based on all the strings in instance variable `myWords`. See the [Java API documentation](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()) for the design constraints to which a `hashCode()` method should conform. 
+
+Note that the Java String class already has a good [`.hashCode()` method](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#hashCode()) we can leverage. Use the `.hashCode()` of the String returned by `this.toString()` to implement this method.
+
+Since `WordGram` objects are immutable (do not change after creation), you do not need to recompute the hash value each time `.hashCode()` is called. Instead, you can compute it the first time `.hashCode()` is called (which you can check against whatever default value you might set in the constructor), and store the result in the `myHash` instance variable. On subsequent calls, simply return `myHash`.
 </details>
 
-
 <details>
-<summary>Implement shiftAdd()</summary>
+<summary>Expand for details on shiftAdd()</summary>
 
 If this `WordGram` has k entries then the `shiftAdd()` method should create and return a _**new**_ `WordGram` object, also with k entries, whose *first* k-1 entries are the same as the *last* k-1 entries of this `WordGram`, and whose last entry is the parameter `last`. Recall that `WordGram` objects are immutable and cannot be modified once created - **this method must create a new WordGram object** and copy values correctly to return back to the user.
 
@@ -181,6 +170,14 @@ Note: To implement shiftAdd you'll need to create a new `WordGram` object. The c
 
 </details>
 
+<details>
+<summary>Expand for details on toString()</summary>
+
+The `toString()` method should return a printable `String` representing all the strings stored in the `WordGram` instance variable `myWords`, each separated by a single blank space (that is, `" "`). You may find the String `join` method useful, see [the documentation](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html#join(java.lang.CharSequence,java.lang.CharSequence...)).
+
+You do not need to recompute this `String` each time `toString()` is called -- instead, store the String in instance variable `myToString`. On subsequent calls your code should simply return the value stored in `myToString` (again using the immutability of `WordGram`s to ensure this value will not change). To determine whether a given call to `toString()` is the first, you can compare to the default constructor value of `myToString`.
+
+</details>
 
 
 ## Coding Part 2: Developing the HashMarkov Class
