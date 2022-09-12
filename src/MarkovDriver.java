@@ -21,7 +21,7 @@ public class MarkovDriver {
 		// Can change the training text here
 		String filename = "data/alice.txt";
 		File f = new File(filename);
-		String text = TextSource.textFromFile(f).toLowerCase();
+		String text = TextSource.textFromFile(f);
 
 		// only one line below should be uncommented
 		MarkovInterface generator = new BaseMarkov(MODEL_ORDER);

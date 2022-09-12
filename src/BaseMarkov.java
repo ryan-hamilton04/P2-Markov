@@ -21,7 +21,7 @@ public class BaseMarkov implements MarkovInterface {
 	public BaseMarkov() {
 		this(2);
 	}
-	
+
 
 	/**
 	 * Initializes a model of given order and random number generator.
@@ -45,25 +45,40 @@ public class BaseMarkov implements MarkovInterface {
 
 
 	/**
+	 * Get a list of Strings containing all words that follow
+	 * from wgram in the training text. Result may be an empty list.
+	 * Implemented by looping over training text.
+	 * @param wgram is a WordGram to search for in the text
+	 * @return List of words following wgram in training text.
+	 * May be empty.
+	 */
+	@Override
+	public List<String> getFollows(WordGram wgram) {
+		List<String> follows = new ArrayList<>();
+		WordGram currentWG = new WordGram(myWords,0,wgram.length());
+		for (int i = wgram.length(); i < myWords.length; i += 1) {
+			String currentWord = myWords[i];
+			if (currentWG.equals(wgram)) {
+				follows.add(currentWord);
+			}
+			currentWG = currentWG.shiftAdd(currentWord);
+		}
+		return follows;
+	}
+
+
+	/**
 	 * Returns a random word that follows kGram in the training text.
 	 * In case no word follows kGram, returns a random word from the
 	 * entire training text.
-	 * @param kGram is being searched for in training text. Typically
+	 * @param wgram is being searched for in training text. Typically
 	 * the previous words of the randomly generated text, but could be
 	 * an arbitrary WordGram.
 	 * @return a random word among those that follow after kGram in 
 	 * the training text, or a random word from the training text.
 	 */
-	private String getNext(WordGram kGram) {
-		ArrayList<String> follows = new ArrayList<String>();
-		WordGram currentWG = new WordGram(myWords,0,kGram.length());
-		for (int i = kGram.length(); i < myWords.length; i += 1) {
-			String currentWord = myWords[i];
-			if (currentWG.equals(kGram)) {
-				follows.add(currentWord);
-			}
-			currentWG = currentWG.shiftAdd(currentWord);
-		}
+	private String getNext(WordGram wgram) {
+		List<String> follows = getFollows(wgram);
 		if (follows.size() == 0) {
 			int randomIndex = myRandom.nextInt(myWords.length);
 			follows.add(myWords[randomIndex]);
