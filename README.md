@@ -1,10 +1,17 @@
-# Project 3: Markov Part 2, Spring 2022
+# Project 2: Markov, Fall 2022
 
 This is the directions document for Project P2 Markov in CompSci 201 at Duke University, Fall 2022. [This document details the workflow](hhttps://coursework.cs.duke.edu/cs-201-fall-22/resources-201/-/blob/main/projectWorkflow.md) for downloading the starter code for the project, updating your code on coursework using Git, and ultimately submitting to Gradescope for autograding.
 
 ## Outline
 
-TODO
+- [Introduction](#introduction)
+  - [What is a WordGram?](#what-is-a-wordgram)
+  - [What is a Markov Model?](#what-is-a-markov-model)
+- [Coding Part 1: Developing the WordGram Class](#coding-part-1-developing-the-wordgram-class)
+- [Coding Part 2: Developing the HashMarkov Class](#coding-part-2-developing-the-hashmarkov-class)
+- [Analysis Questions](#analysis-questions)
+- [Submitting, Reflect, Grading](#submitting-reflect-grading)
+
 
 ## Introduction
 
@@ -196,7 +203,7 @@ Note: To implement shiftAdd you'll need to create a new `WordGram` object. The c
 
 
 
-
+## Coding Part 2: Developing the HashMarkov Class
 
 
 ### Debugging Your Code in EfficientMarkov
@@ -244,143 +251,17 @@ To test your class, use it in the `MarkovDriver` program and compare the output 
 
 </details>
 
-## Submitting, Analysis, Reflect 
-<details>
-<summary>Click to Expand</summary>
+## Analysis Questions
 
-### Code
-Push your code to Git. Do this often. You can use the autograder on Gradescope to test your code. You should NOT complete the reflect form until you're done with all the coding portion of the assignment. Since you may uncover bugs from the autograder, you should wait until you've completed debugging and coding before completing the reflect form.
+Answer the following questions in your analysis. You'll submit your analysis as a separate PDF as a separate assignment to Gradescope.
 
-### Analysis
-<details>
-<summary>Click to Expand</summary>
+## Submitting, Reflect, Grading
+You will submit the assignment on Gradescope. You can access Gradescope through the tab on Sakai.Be sure your final program is in your Git repository before you submit it for autograding on Gradescope. Please take note that changes/commits on GitLab are NOT automatically synced to Gradescope. You are welcome to submit as many times as you like, only the most recent submission will count for a grade.
 
-You're given a class `Benchmark` that runs several tests that allow you to compare the performance (in terms of the program runtime) of the default, brute-force `BaseMarkov` and the more efficient map-based `EfficientMarkov` code. The code you start with uses `data/hawthorne.txt`, which is the text of ***A Scarlet Letter***, a text of 487,614 characters (as you'll see in the output when running the benchmark tests). The class uses `BaseMarkov`, but can be easily changed to use `EfficientMarkov` by changing the appropriate line in the `getMarkov` method called from main. You're free to alter this class.
+Don't forget to upload a PDF for the analysis part of this assignment and mark where you answer each question. This is a separate submission in Gradescope.
 
-Answer the following questions in your analysis. You'll submit your analysis as a separate PDF as a separate assignment ***to Gradescope***. Note that we are not looking for particular numbers so much as reasonable interpretations of your results.
-
-1. *Change made on 5:30 PM on Sept 25: Use provided data rather than run your own*. 
-
-Use this data for `BaseMarkov` run on staff laptop via the `BenchMark` program using the default file and an order 5 Markov Model.
-|time |   source | #chars |
-|------|--------|------|
-|0.107   |487614  |1000 |
-|0.204   |487614  |2000 |
-|0.302   |487614  |8000 |
-|1.440   |487614  |16000 |
-|2.825   |487614  |32000 |
-|5.674   |487614  |64000 |
-
-The program also generates 4,096 characters using texts that increase in size from 487,614 characters to 4,876,140 characters (10 times the number).  This data is shown below.
-
-|time |   source | #chars |
-|------|--------|------|
-|0.370   |487614  |4096 |
-|0.720   |975228  |4096 |
-|1.065  |1462842 |4096 |
-|1.421   |1950456 |4096 |
-|1.795   |2438070 |4096 |
-|2.121   |2925684 |4096 |
-|2.531   |3413298 |4096 |
-
-
-In your analysis file, include an explanation as to whether the timings support the O(*NT*) quadratic growth analysis. That is, do your timings suggest that the running time scales with the product of the size of the training text *N* and the number of characters to be generated *T*. Use the fact that for some runs *N* is fixed and *T* varies whereas in the other runs *T* is fixed and *N* varies.
-
-2. Determine (from running `Benchmark.java`) how long it takes for `EfficientMarkov` to generate 2,000, 4,000, 8,000, 16,000, and 32,000 random characters using the default file and an order 5 Markov Model. Include these timings in your report. The program also generates 4,096 characters using texts that increase in size from 487,614 characters to 4,876,140 characters (10 times the number). In your analysis file include an explanation as to whether the timings support the O(*N*+*T*) analysis. That is, do your timings suggest that the running time scales with the sum of the size of the training text *N* and the number of characters to be generated *T*.
-
-3. Read the article *Can’t Access GPT-3? Here’s GPT-J — Its Open-Source Cousin* accessible via this link: https://towardsdatascience.com/cant-access-gpt-3-here-s-gpt-j-its-open-source-cousin-8af86a638b11 . Describe any thoughts you have about the article as it relates to this assignment. 
-
-***After completing the analysis questions you submit your answers in a PDF to Gradescope in the appropriate assignment.***
-
-</details>
-
-### Reflect
-
-Answer questions in this form: https://docs.google.com/forms/d/e/1FAIpQLSfsEbHxVJSP3GwxTGf17FaS8FjAvzb9cyhpfKwBouKTsDVV8Q/viewform 
-
-### Grading
+After submitting, fill out the reflect form here LINK TO BE ADDED.
 
 For this program grading will be:
 
-| Points | Grading Criteria |
-| ------ | ------ |
-| 16 | Correctness of EfficientMarkov and EfficientWordMarkov code. (10 for EfficientMarkov, 5 for EfficientWordMarkov, 1 for API)|
-| 6 | Answers to analysis questions |
-| 2 | Reflect form |
-
-</details>
-
-## Appendix
-<details>
-<summary>Click to Expand</summary>
-
-### Assignment FAQ
-
-**My unchanged `BaseMarkov` does not produce the same output as reported above or does not give the correct number of characters as described in `analysis.txt`.** 
-
-Post to Ed. This is unlikely to happen for correct programs.
-
-**When I run `Benchmark` using `EfficientMarkov`, it takes even longer than `BaseMarkov` and/or generates an `OutOfMemoryException`.**
-
-Make sure you clear the map at the start of `setTraining` by calling `myMap.clear()`. Because the `Benchmark` class creates a single `EfficientMarkov` object and calls `setTraining()` several times, if you do not clear the map, new values will be added every time the method is called.
-
-**How can I debug my `EfficientMarkov` implementation?**
-
-You can test your implementation by providing a String like `“bbbabbabbbbaba”` as the training text and print the keys and values of the map you build to confirm that your map is constructed correctly. Working out simple cases by hand and confirming them with your code is a good way to test code in general.
-In order to run your code, you can make some changes to the `main()` method in `MarkovDriver` or `Benchmark`.
-
-**How do I deal with randomness?**
-
-It’s hard enough to debug code without random effects making it even harder. In the `MarkovModel` class you’re provided, the Random object used for random-number generation is constructed as follows:
-
-`myRandom = new Random(RANDOM_SEED);`
-
-`RANDOM_SEED` is defined to be 1234. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. If you use a seed of `RANDOM_SEED` in your `EfficientMarkov` model you should get the same random text as when the brute-force method is used. This will help you debug your program because you can check your results with those of the code you’re given which you can rely on as being correct. You'll get this behavior "for free" since the first line of your `EfficientMarkov` constructor will be `super(order)` -- which initializes the `myRandom` instance variable.
-
-If you use the same `RANDOM_SEED` in constructing the random number generator used in your new implementation, you should get the same text, but your code should be faster. You can use `MarkovDriver` to test this. Do not change the given `RANDOM_SEED` random seed when testing and submitting the program, though you can change it when you'd like to see more humorous and different random text.
-
-**The length of the Markov Model is way too small**
- 
-The code is encountering the EOS tag too soon and then exiting - look over where you’re adding the EOS tag.
-
-### Output of MarkovDriver
-<details>
-<summary>Click to Expand</summary>
-
-This table shows the output of different Markov Models for President Trump's State of the Union address in 2017 and President Bush's State of the Union address in 2007. 
-
-| k | President Trump State of the Union 2017 | President Biden State of the Union 2021 |
-| - | ------                                  | ------                                 |
-| 1 |  t bers, thatetiourotha atr Itry es tr l en thed mpparow eves, The l t. tos tive derke, t d, by. Ames ther ais, outyeneanonerod pisind Th. pr cres olinacrop a chencon borurenge ind on thers thest wat w | r bus io vear mans anovine se futinybereagicorthences – min pl anginsethec. lid Imint a me e estoreon We alel the tho Wed orreshilthe- lrien thaionveost NIDandend jon cempest Amaid ofit’r thnkege awis |
-| 2 | ps of Yort sameriabonuchismany to reving theiregive nor toget ou, war. Shat ve vinno Nat thar deart ree.” Alatiall ar And on Natiens, to plese — and on, an eve imboyme shly offely, as penigh Kengrear| om of rovestin thater the meris to becaust Chilly th. It’s itiand Amerear precouleassarms on Just it usell cour con 9/11.3 muld st an ton. Stax owthat to come so puble coles divered magaild ouggle vi|
-| 3 | f us the pracificity othe including. Pare workers of his Capitol, meets with in againspire food there need. Aftere in our strain. We regislast, homento uneminists, them, thinally are top prover our Go | irst on pock of their a Medica’s demong Right ten andame failesses at I know – it we cans by bet why time to said by more imple. We ass the wrong the nation a your drugs. Tonighternet, and in Famillio |
-| 4 | arriorities why, this like Congressure the nearly 400, incoln an incredible to hardships are build our countain minor Otto join me it, but where break to than $4,000 — so Americans — manufacture of St | life can will crising the faucet again. The world. Talk away. So how right — and get by negotiating than 400,000 pharmacism to be big tax brack up. That I’m provided to act police President have act. |
-| 5 | has taughters order Patrol Agents, and together, gaining our difficult — because of the authority and that we do. I will be a major plants will determined a tube to endured by criminals and minor chi | permanent study shot an option during the productive diseases opens without our high-speed international to Americans can be first 100 Days of joy, cried out the central challenges facing nothing up. |
-</details>
-
-### What is a Markov Model?
-<details>
-<summary>Click to Expand</summary>
-
-An order-k Markov model uses strings of k-letters to predict text: these are called *k-grams*. It's also possible to use k-grams that are composed of words rather than letters. An order-2 Markov model uses two-character strings or *bigrams* to calculate probabilities in generating random letters. A string called the *training text* is used to calculate these probabilities.
-
-For example, suppose that in the text we're using for generating random letters, the so-called training text, using an order-2 Markov model, the bigram `"th"` is followed 50 times by the letter `"e"`, 20 times by the letter `"a"`, and 30 times by the letter `"o"`, because the sequences `"the"`, `"tha"`, and `"tho"` occur 50, 20, and 30 times, respectively while there are no other occurrences of `"th"` in the text we're modeling.
-
-Now suppose that in generating random text using an order-2 Markov process we generate the bigram `"th"` --- then based on this bigram we must generate the next random character using the order-2 model. The next letter will be an 'e' with a probability of 0.5 (50/100); will be an 'a' with probability 0.2 (20/100); and will be an 'o' with probability 0.3 (30/100). If 'e' is chosen, then the next bigram used to calculate random letters will be `"he"` since the last part of the old bigram is combined with the new letter to create the next bigram used in the Markov process.
-
-Rather than using probabilities explicitly, your code will use them implicitly. You'll store 50 occurrences of `"e"`, 20 occurrences of `"a"` and 30 occurrences of `"o"` in an `ArrayList`. You'll then choose one of these at random. This will replicate the probabilities, e.g., of 0.3 for `"o"` since there will be 30 `"o"` strings in the 100-element `ArrayList`.
-</details>
-
-### Example Output of WordMarkov
-<details>
-<summary>Click to Expand</summary>
-
-| k | President Trump State of the Union 2017 | President Biden State of the Union 2021 |
-| - | ------                                  | ------                                 |
-| 1 | friends on Long Island. His tormentors wanted to reform is moving a train tracks, exhausted from Mexico to reopen an order directing Secretary Mattis to independence, and a mountain, we are dreamers too. Here tonight — and paramedics who will see their corrupt dictatorship, I am asking both parties as | the 21st Century. We cannot walk away from their net worth increase by man—made and save lives. And we will long endure is familiar, this podium, and I know the American households. We’ve done nothing – Democrats and billionaires who knows what it’s in that have to leave. Our grids|
-| 2 | expected, and others we could never have imagined. We have faced challenges we expected, and others we could never have imagined.  We have faced challenges we expected, and others we could never have imagined. We have shared in the gallery with Melania. Ashlee was aboard one of our country. The | survive. It did. But the struggle is far from over. The questionof whether our democracy since the Great Depression. The worst economic crisis since the Great Depression. The worst pandemic in a direct and proportionate way to Russia’s interference in our mutual interests. As we gather here tonight, the|
-| 3 | respect our country. The fourth and final pillar protects the nuclear family by ending chain migration. Under the current broken system, a single immigrant can bring in virtually unlimited numbers of distant relatives. Under our plan, those who meet education and work requirements, and show good moral character, will be | we need to ensure greater equity and opportunity for women. Let’s get the Paycheck Fairness Act to my desk as soon as possible. I also hope Congress can get to my desk the Equality Act to protect Asian Americans and Pacific Islanders from the vicious hate crimes we’ve seen this |
-| 4 | we passed tax cuts, roughly 3 million workers have already gotten tax cut bonuses — many of them thousands of dollars per worker.  Apple has just announced it plans to invest a total of $350 billion in America, and hire another 20,000 workers. This is our new American moment. There | our tables. Immigrants have done so much for America during the pandemic – as they have throughout our history. The country supports immigration reform. Congress should act. We have a giant opportunity to bend to the arc of the moral universe toward justice. Real justice. And with the plans I|
-| 5 | did not stay silent. America stands with the people of Iran in their courageous struggle for freedom. I am asking the Congress to end the dangerous defense sequester and fully fund our great military. As part of our defense, we must modernize and rebuild our nuclear arsenal, hopefully never having | soul of America – we need to protect the sacred right to vote. More people voted in the last presidential election than ever before in our history – in the middle of one of the worst pandemics ever. That should be celebrated. Instead it’s being attacked. Congress should pass H.R.|
-
-</details>
+TO BE ADDED
