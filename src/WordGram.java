@@ -54,7 +54,11 @@ public class WordGram {
 	*/
 	@Override
 	public boolean equals(Object o) {
-		// TODO correctly implement equals
+		if (! (o instanceof WordGram) || o == null){
+			return false;
+		}
+		WordGram other = (WordGram) o;
+		// TODO complete correct implementation of equals (above is correct)
 		return false;
 	}
 
