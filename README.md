@@ -7,6 +7,7 @@ This is the directions document for Project P2 Markov in CompSci 201 at Duke Uni
 - [Introduction](#introduction)
   - [What is a WordGram?](#what-is-a-wordgram)
   - [What is a Markov Model?](#what-is-a-markov-model)
+- [Running Driver Code](#running-driver-code)
 - [Coding Part 1: Developing the WordGram Class](#coding-part-1-developing-the-wordgram-class)
 - [Coding Part 2: Developing the HashMarkov Class](#coding-part-2-developing-the-hashmarkov-class)
 - [Analysis Questions](#analysis-questions)
@@ -71,48 +72,22 @@ This assignment has its roots in several places: a story named _Inflexible Logic
 The true mathematical roots are from a 1948 monolog by Claude Shannon, [A Mathematical Theory of Communication](https://docs.google.com/viewer?a=v&pid=sites&srcid=ZGVmYXVsdGRvbWFpbnxtaWNyb3JlYWRpbmcxMmZhbGx8Z3g6MThkYzkwNzcyY2U5M2U5Ng) which discusses in detail the mathematics and intuition behind this assignment. This assignment has its roots in a Nifty Assignment designed by Joe Zachary from U. Utah, assignments from Princeton designed by Kevin Wayne and others, and the work done at Duke starting with Owen Astrachan and continuing with Jeff Forbes, Salman Azhar, Branodn Fain, and the UTAs from Compsci 201.
 </details>
 
+
+## Running Driver Code
+
+TO BE ADDED
  
 ## Coding Part 1: Developing the `WordGram` Class
 
+Your first task is to develop the `WordGram` class itself. You're given an outline of `WordGram.java` with appropriate instance variables declared, as well as stub (not correctly implemented methods.
+
+Your task will be to implement these methods in `WordGram` according to the specifications provided. Javadocs in the starter code detail the expected behavior of all methods. For `hashCode`, `equals`, and `toString`, your implementations should conform to the specifications as given in the [documentation for `Object`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html). You can expand the sections below to see details about individual methods you need to implement.
+
+### Constructor 
 You'll construct a `WordGram` object by passing as constructor arguments: an array, a starting index, and the size (or order) of the `WordGram.` You'll **store the strings in an array instance variable** by copying them from the array passed to the constructor.
 
-### Getting Started
-You're given an outline of `WordGram.java` with stub (unimplemented) methods and a stub constructor. Your task will be to implement these methods in `WordGram` according to the specifications detailed below. In particular, you should implement the following
-
-- The constructor `WordGram(String[] words, int index, int size)`
-- `toString()`
-- `hashCode()`
-- `equals(Object other)`
-- `length()`
-- `shiftAdd(String last)`
-
-There is also a `wordAt()` method, but it is already completed, you do not need to edit this method.
-
-For `hashCode`, `equals`, and `toString`, your implementations should conform to the specifications as given in the [documentation for `Object`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html). As you develop, you will test your implementation using the *JUnit* tests in `WordGramTest`. 
-
-Before you start coding, be sure you can run the `SimpleWordGramDriver`. The output (before you have done anything to `WordGram` should be similar to what's shown below.
-```
-gram = null, length = 0, hash = 0
-gram = null, length = 0, hash = 0
-```
-Note that VS Code displays duplicate lines by printing out one line with a number to the side. So if you got similar to
-```
-(2) gram = null, length = 0, hash = 0
-```
-then that matches the above output.
-
-
-### Implementing `WordGram` Constructor, `toString`, and `hashCode`
-
-The first three methods you should implement are the constructor, `.toString()`, and `.hashCode()`. Once you have completed these, you can again run program `SimpleWordGramDriver`; you should get different output - in particular the first line should now be
-```
-gram = Computer Science is fun, length = 4, hash = 52791914
-```
-
-You are also provided with [JUnit tests](#junit-tests) that you can use to test your implementation. Expand the following sections for details on each of these methods.
-
 <details>
-<summary>Implement the Constructor</summary>
+<summary>Expand for details on the Constructor</summary>
 
 There are three instance variables in `WordGram`:
 ```
@@ -138,7 +113,7 @@ The call `new WordGram(words,3,4)` should create this array `myWords` since the 
 | "test" | "of" | "the" | "code"|
 | | | | |
 
-You do not need to change the default values assigned to the instance variables `myToString` and `myHash` in the constructor stub; these will change when you implement the methods `.toString()` and `.hashCode()`, respectively.
+You do not need to initialize instance variables `myToString` and `myHash` in the constructor stub; these will change when you implement the methods `.toString()` and `.hashCode()`, respectively.
 </details>
 
 
