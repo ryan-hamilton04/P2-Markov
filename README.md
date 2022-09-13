@@ -75,8 +75,36 @@ The true mathematical roots are from a 1948 monolog by Claude Shannon, [A Mathem
 
 ## Running Driver Code
 
-TO BE ADDED
- 
+The primary driver code for this assignment is located in `MarkovDriver.java`. You should be able to run the `public static void main` method of `MarkovDriver` immediately after cloning the starter code, and should see something like the output shown below.
+
+```
+Generated 100 words with order 2 Markov Model
+----------------------------------
+ sorrowful ME' as to an a the with you things ring, deal enough!' ago: this unjust 
+and felt Tortoise explanation; he forgetting WOULD the other it `That's person Duchess 
+broken deal it. was Hare. talking simple old, thoughtfully. last Alice; while next 
+away and held `poison,' the said at under King way?', only with could looking other 
+it came and accidentally it she `and round smile. things children. very YOU copies 
+in `why join to drowned `That had if I much did said: stop introduced or said out 
+beautiful go she thank machine it at morsel beauti--FUL an 
+----------------------------------
+Training time = 0.012 s
+Generating time = 0.007 s
+```
+
+This just looks like nonsense for now because the `WordGram` class is not correctly implemented. Inspecting `MarkovDriver` a little more closely, note:
+
+- Some static variables used in the main method are defined at the top of class, namely:
+  - `TEXT_SIZE` is the number of words to be randomly generated.
+  - `RANDOM_SEED` is the random seed used to initialize the random number generator. You should always get the same random text given a particular random seed and training text.
+  - `MODEL_ORDER` is the order of `WordGram`s that will be used.
+  - `PRINT_MODE` can be set to true or false based on whether you want the random text generated to be printed.
+- The `filename` defined at the beginning of the main method determines the file that will be used for the training text. By default it is set to `data/alice.txt`, meaning the text of *Alice in Wonderland* is being used. Note that data files are located inside the data folder.
+- A `MarkovInterface` object named `generator` is created. By default, it uses `BaseMarkov` as the implementing class, a complete implementation of which is provided in the starter code. Later on, when you have developed `HashMarkov`, you can comment out the line using `BaseMarkov` and uncomment the line using `HashMarkov` to change which implementation you use.
+- The `generator` then sets the specified random seed. You should get the same result on multiple runs with the same random seed. Feel free to change the seed for fun while developing and running, but *the random seed should be set to 1234 as in the default when submitting for grading*.
+- The `generator` is timed in how long it takes to run two methods: first `setTraining()` and then `getRandomText()`.
+- Finally, values are printed: The random text itself if `PRINT_MODE` is set to true and the time it took to train (that is, for `setTraining()` to run) the Markov model and to generate random text using the model (that is, for `getRandomText` to run). 
+
 ## Coding Part 1: Developing the `WordGram` Class
 
 Your first task is to develop the `WordGram` class itself. You're given an outline of `WordGram.java` with appropriate instance variables declared, as well as stub (not correctly implemented methods.
@@ -178,6 +206,7 @@ The `toString()` method should return a printable `String` representing all the 
 You do not need to recompute this `String` each time `toString()` is called -- instead, store the String in instance variable `myToString`. On subsequent calls your code should simply return the value stored in `myToString` (again using the immutability of `WordGram`s to ensure this value will not change). To determine whether a given call to `toString()` is the first, you can compare to the default constructor value of `myToString`.
 
 </details>
+
 
 
 ## Coding Part 2: Developing the HashMarkov Class
