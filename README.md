@@ -54,11 +54,13 @@ An order-k Markov model uses order-k `WordGram`s to predict text: we sometimes c
 
 Suppose we are using an order 2 Markov model with the following training text (located in `testfile.txt`):
 
-> this is a test
-> it is only a test
-> do you think it is a test
-> this test it is ok
-> it is short but it is ok to be short
+```
+this is a test
+it is only a test
+do you think it is a test
+this test it is ok
+it is short but it is ok to be short
+```
 
 We begin with a random k-gram, suppose we get `[it, is]`. This appears 5 times in total, and is followed by `only`, `a`, `ok`, `short`, and again by `ok` each of those five times respectively. So the probability (in the training text) that `it is` is followed by `ok` is 2/5 or 40%, and for the other words is 1/5 or 20%. To generate a random word following the 2-gram `[it, is]`, we would therefore choose `ok` with 2/5 probability, or `only`, `a`, or `short` with 1/5 probability each.
 
