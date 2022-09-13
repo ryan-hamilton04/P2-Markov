@@ -78,7 +78,10 @@ The true mathematical roots are from a 1948 monolog by Claude Shannon, [A Mathem
 The primary driver code for this assignment is located in `MarkovDriver.java`. You should be able to run the `public static void main` method of `MarkovDriver` immediately after cloning the starter code, and should see something like the output shown below.
 
 ```
-Generated 100 words with order 2 Markov Model
+Trained on text in data/alice.txt with T=28196 words
+Training time = 0.012 s
+Generated N=100 random words with order 2 Markov Model
+Generating time = 0.014 s
 ----------------------------------
  sorrowful ME' as to an a the with you things ring, deal enough!' ago: this unjust 
 and felt Tortoise explanation; he forgetting WOULD the other it `That's person Duchess 
@@ -86,10 +89,7 @@ broken deal it. was Hare. talking simple old, thoughtfully. last Alice; while ne
 away and held `poison,' the said at under King way?', only with could looking other 
 it came and accidentally it she `and round smile. things children. very YOU copies 
 in `why join to drowned `That had if I much did said: stop introduced or said out 
-beautiful go she thank machine it at morsel beauti--FUL an 
-----------------------------------
-Training time = 0.012 s
-Generating time = 0.007 s
+beautiful go she thank machine it at morsel beauti--FUL an
 ```
 
 This just looks like nonsense for now because the `WordGram` class is not correctly implemented. Inspecting `MarkovDriver` a little more closely, note:
@@ -210,7 +210,10 @@ You do not need to recompute this `String` each time `toString()` is called -- i
 After correctly implementing the `WordGram` class, re-run the `MarkovDriver`. With the default values (`TEXT_SIZE = 100`, `RANDOM_SEED = 1234`, `MODEL_ORDER = 2`, `PRINT_MODE = true`, and `filename = "data/alice.txt"`) you should see different output than when you first ran the starter code:
 
 ```
-Generated 100 words with order 2 Markov Model
+Trained on text in data/alice.txt with T=28196 words
+Training time = 0.012 s
+Generated N=100 random words with order 2 Markov Model
+Generating time = 0.060 s
 ----------------------------------
 Alice; `I daresay it's a set of verses.' `Are they in the distance, and she swam 
 about, trying to touch her. `Poor little thing!' said Alice, `a great girl like you,' 
@@ -218,10 +221,7 @@ about, trying to touch her. `Poor little thing!' said Alice, `a great girl like 
 for a few minutes to see a little worried. `Just about as it turned a corner, `Oh 
 my ears and whiskers, how late it's getting!' She was close behind it was growing, 
 and very neatly and simply arranged; the only one who had got its head to keep back 
-the wandering hair 
-----------------------------------
-Training time = 0.012 s
-Generating time = 0.063 s
+the wandering hair
 ```
 
 Note in particular how the phrases/sentences seem better connected than what resulted from the starter code. As you will see when inspecting `BaseMarkov`, if it cannot find a given `WordGram` to calculate possible following words, it simply generates a random word from the text. Before, with an incorrect constructor, `equals()`, etc., the original starter message was just random words from *Alice in Wonderland*. Now with a correct `WordGram` class, `BaseMarkov` is generating output from the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model).
@@ -264,7 +264,11 @@ Finally, you should loop through the words in the training text *exactly once* a
 <details>
 <summary>Expand for details on getRandomText()</summary>
 
-This method should use the `HashMap` instance variable set during `setTraining()` and the `getFollows()` method to generate `length` words of random text one at a time according to the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model). You can use `BaseMarkov` as an example to adapt, for example, how to update the current `WordGram`, loop generating the random text, to see how to use the random number generator to get a random integer index up to a certain bound, etc. Your implementation should *not* loop over the words of the training text again.
+This method should use the `HashMap` instance variable set during `setTraining()` and the `getFollows()` method to generate `length` words of random text one at a time according to the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model). 
+
+You can use `BaseMarkov` as an example to adapt, for example, how to update the current `WordGram`, loop generating the random text, to see how to use the random number generator to get a random integer index up to a certain bound, etc. Like `BaseMarkov`, in the event that there is a `WordGram` with no word that follows (i.e., `getFollows()` returns an empty list), you should choose a word at random from the training text. 
+
+Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the training text again every time it generates a next word.
 
 </details>
 
@@ -275,18 +279,53 @@ This method should use the `HashMap` instance variable set during `setTraining()
 
 </details>
 
-### Dealing with Randomness
+### Running and Testing HashMarkov
 
 It’s hard enough to debug code without random effects making it even harder. In the `BaseMarkov` class you’re provided, the Random object used for random-number generation is constructed as follows:
 
 `myRandom = new Random(RANDOM_SEED);`
 
-`RANDOM_SEED` is defined to be 1234 in the driver method. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. ***If you use a seed of `RANDOM_SEED` in your `HashMarkov` model, you should get the same random text as when the method from `BaseMarkov` is used.*** This will help you debug your program because you can check your results with those of the code you’re given which you can rely on as being correct.
+`RANDOM_SEED` is defined to be 1234 in the driver method. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. **If you use a seed of `RANDOM_SEED` in your `HashMarkov` model, you should get the same random text as when the method from `BaseMarkov` is used.**
+
+Once you are confident that your `HashMarkov` code is correct, you are ready to move on to the analysis questions.
 
 
 ## Analysis Questions
 
-Answer the following questions in your analysis. You'll submit your analysis as a separate PDF as a separate assignment to Gradescope.
+Answer the following questions in your analysis. You'll submit your analysis as a separate PDF as a separate assignment to Gradescope. Answering these questions will require you to run the driver code to generate timing data and to reason about the algorithms and data structures you have implemented.
+
+For the analysis, let `$N$` denote the length/number of words of the random text being generated. Let `$T$` denote the length/number of words of the training text. Assume that *all words are of at most a constant length* (say, no more than 35 characters).
+
+### Question 1
+
+What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `BaseMarkov` impelementation in terms of `$N$` and `$T$`? State your answers, and justify them in *both* of the following ways.
+
+- *Theory*. Explain why you expect `setTraining()` and `getRandomText()` for `BaseMarkov` to have the stated runtime complexity by referencing the algorithms/data structures/code used. Explain the complexity of each operation/method, accounting for any looping, in the code. You may assume that `nextInt` is a constant time operation to generate a random number and `split()` has runtime complexity `$O(T)$` when called on the training text.
+- *Experiment*. Run the main method of `MarkovDriver` with *at least* 3 different data files of varying sizes `$T$` (it is fine to use `alice.txt` for one of them). For each, run the main method with *at least* 3 different values of `TEXT_SIZE` (which corresponds to `$N$`). So you should have a total of at least 9 data points consisting to fill out a table like the one shown below. Explain how your empirical data does or does not conform to your expectations for the runtime complexity of `getRandomText()`.
+
+| Data file    | $`T`$    | $`N`$    | Training Time (s)    | Generating time (s)    |
+| ------------ | -------- | -------- | -------------------- | ---------------------- |
+| alice.txt    | 28,196   | 100      | 0.012                | 0.060                  |
+| ...          | ....     | ...      | ...                  | ...                    |
+
+*Suggestions*: You will likely get the clearest data if you include very different values for $`T`$ and $`N`$. Two of the largest text files you might use are `kjv10.txt` and `shakespeare.txt`. You can set $`N`$ directly to much larger values by changing `TEXT_SIZE`, for example to 1,000 or 10,000. When doing so, you can set `PRINT_MODE` to `false` to avoid having a huge amount of text printed. Note that `BaseMarkov` is not necessarily an efficient implementation, so it may take a long time to run with large $`T`$ and $`N`$. You do not need to run anything for multiple minutes just for data collection for this assignment.  
+
+### Question 2
+
+Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `HashMarkov` impelementation in terms of `$N$` and `$T$`? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1.
+
+### Question 3
+
+Markov models like the one you implemented in this project are one example of a larger research area in artificial intelligence (AI) and machine learning (ML) called *generative models* for *natural language processing*. Currently, one of the state-of-the-art models is called *GPT-3*, created by [OpenAI](https://openai.com/about/). OpenAI states that their "mission is to ensure that artificial general intelligence (AGI)—...highly autonomous systems that outperform humans at most economically valuable work—benefits all of humanity." 
+
+GPT-3 is not, however, open-source, meaning that the underlying source code of the model is not freely available and the model is only accessible via API calls. Read this short article about open source code in artificial intelligence: Can’t Access GPT-3? Here’s GPT-J — Its Open-Source Cousin [accessible via this link](https://towardsdatascience.com/cant-access-gpt-3-here-s-gpt-j-its-open-source-cousin-8af86a638b11). 
+
+Answer one or both of the following related questions:
+- What do you think of OpenAI's stated mission? In particular, do you think that "highly autonomous systems that outperform humans at most economically valuable work" can benefit all of humanity? Why or why not?
+- Do you think new research code in AI/ML should be more open source? Why, or why not? 
+
+There is no right or wrong answer to either question; we are looking for one or two paragraphs of thoughtful reflection.
+
 
 ## Submitting, Reflect, Grading
 You will submit the assignment on Gradescope. You can access Gradescope through the tab on Sakai.Be sure your final program is in your Git repository before you submit it for autograding on Gradescope. Please take note that changes/commits on GitLab are NOT automatically synced to Gradescope. You are welcome to submit as many times as you like, only the most recent submission will count for a grade.
