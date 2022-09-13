@@ -40,12 +40,16 @@ public class MarkovDriver {
 		double afterGenerating = System.nanoTime();
 		double generatingTimeMS = (afterGenerating - beforeGenerating)/1e9; 
 
-		System.out.printf("\nGenerated %d words with order %d Markov Model\n", TEXT_SIZE, MODEL_ORDER);
+		int numTrainWords = text.split("\\s+").length;
+		System.out.printf("\nTrained on text in %s with T=%d words\n", filename, numTrainWords);
+		System.out.printf("Training time = %2.3f s\n", trainingTimeMS);
+		System.out.printf("Generated N=%d random words with order %d Markov Model\n", TEXT_SIZE, MODEL_ORDER);
+		System.out.printf("Generating time = %2.3f s\n", generatingTimeMS);
 		if (PRINT_MODE) {
 			printNicely(random,80);
 		}
-		System.out.printf("Training time = %2.3f s\n", trainingTimeMS);
-		System.out.printf("Generating time = %2.3f s\n", generatingTimeMS);
+		
+		
 
 	}
 
