@@ -230,6 +230,11 @@ Caution: Seeing the output shown above does not necessarily mean that every meth
 
 ## Coding Part 2: Developing the HashMarkov Class
 
+In this part you will develop a Markov model for generating random text using `WordGram`s and hashing. In particular, you should create a new `HashMarkov.java` file with a single public `HashMarkov` class that implements the `MarkovInterface`. 
+
+Your implementation should have the same behavior as `BaseMarkov` in terms of implementing the interface methods and generating the same output, but it will have different performance properties due to the use of a `HashMap` in training. In particular, `HashMarkov` should create an instance variable `HashMap` that maps `WordGram`s of a given order to `List`s of words that follow that WordGram. The training text should be read (looped over) *exactly once* during the `setTraining()` method to create this map. Subsequently, the `getFollows()` method should simply return the corresponding `List` from the map, or an empty `List` if there is no entry in the map, and this should be used in `getRandomText()` to avoid having to search the training text again for every random word generated.
+
+You can and should use `BaseMarkov` as an example for how to implement the `MarkovInterface`, noting in particular that you *must* override and implement the interface methods. The private *helper* method `getNext()` is not required, but you might consider implementing something analogous or even other private helper methods to keep your `HashMarkov` implementation organized.
 
 ### Debugging Your Code in EfficientMarkov
 <details>
@@ -242,16 +247,6 @@ It’s hard enough to debug code without random effects making it even harder. I
 `RANDOM_SEED` is defined to be 1234. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. ***If you use a seed of `RANDOM_SEED` in your `EfficientMarkov` model, you should get the same random text as when the brute-force method from `BaseMarkov` is used.*** This will help you debug your program because you can check your results with those of the code you’re given which you can rely on as being correct. You'll get this behavior "for free" since the first line of your `EfficientMarkov` constructor will be `super(order)` -- which initializes the `myRandom` instance variable.
 
 </details>
-
-</details>
-
-## Overview of Programming: WordMarkov
-<details>
-<summary>Click to Expand</summary>
-
-If you change the `MarkovDriver` to use a `BaseWordMarkov` class instead of a `BaseMarkov` class then words rather than characters will be used to generate a model. You'll need a working `WordGram` class from the [Part 1 Markov Assignment](https://coursework.cs.duke.edu/201fall21/P2-Markov-Part-1). *One is provided for you to use as part of the code you clone from the Git repository*. Text generated for 50 words is shown in the [appendix](#appendix). Here a k-gram is a sequence of *k* words, e.g., a `WordGram` rather than a String of k-characters. You can generate this using `MarkovDriver` and the `BaseWordMarkov` object in that class.
-
-Just as you created `EfficientMarkov` by extending `BaseMarkov`, you'll create `EfficientWordMarkov` by extending `BaseWordMarkov`. You'll create two constructors and implement two methods similar to those in `EfficientMarkov`: `setTraining` and `getFollows`. The difference is that instead of String objects as keys in a map you'll be using `WordGram` objects as keys. You must create the `EfficientWordMarkov` class from scratch; you're not provided with starter code.
 
 ### Implementing EfficientWordMarkov
 <details>
