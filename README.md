@@ -47,12 +47,9 @@ and
 
 Markov models are random models with the Markov property. In our case, we want to create a Markov model for generating random text that looks similar to a training text. We will generate one random word at a time, and the Markov property in our context means that the probabilities for that next word will be based on the previous words.
 
-An order-k Markov model uses order-k `WordGram`s to predict text: we sometimes call these *k-grams* where *k* refers to the order. To begin, we select a random k-gram from the *training text* (the data we use to create our model; we want to generate random text similar to the training text). Then, we look for instances of that k-gram in the training text in order to calculate the probabilities corresponding to words that might follow. We then generate a new word according to these probabilities, after which we repeat the process using the last k-1 words from the previous k-gram and the newly generated word. Continue in that fashion to create the desired number of random words. Expand below for a concrete example.
+An order-k Markov model uses order-k `WordGram`s to predict text: we sometimes call these *k-grams* where *k* refers to the order. To begin, we select a random k-gram from the *training text* (the data we use to create our model; we want to generate random text similar to the training text). Then, we look for instances of that k-gram in the training text in order to calculate the probabilities corresponding to words that might follow. We then generate a new word according to these probabilities, after which we repeat the process using the last k-1 words from the previous k-gram and the newly generated word. Continue in that fashion to create the desired number of random words. 
 
-<details>
-<summary>Expand for example calculation of probabilities</summary>
-
-Suppose we are using an order 2 Markov model with the following training text (located in `testfile.txt`):
+Here is a concrete example. Suppose we are using an order 2 Markov model with the following training text (located in `testfile.txt`):
 
 ```
 this is a test
@@ -67,8 +64,6 @@ We begin with a random k-gram, suppose we get `[it, is]`. This appears 5 times i
 Rather than calculating these probabilities explicitly, your code will use them implicitly. In particular, the `getFollows` method will return a `List` of *all* of the words that follow after a given k-gram in the training text (including duplicates), and then you will choose one of these words uniformly at random. Words that more commonly follow will be selected with higher probability by virtue of being duplicated in the `List`.
 
 Of course, for a very small training text these probabilities may not be very meaningful, but random generative models like this can be much more powerful when supplied with large quantities of training data, in this case meaning very large training texts.
-
-</details>
 
 <details>
 <summary>Historical details of this assignment (optional)</summary>
@@ -231,7 +226,7 @@ Generating time = 0.063 s
 
 Note in particular how the phrases/sentences seem better connected than what resulted from the starter code. As you will see when inspecting `BaseMarkov`, if it cannot find a given `WordGram` to calculate possible following words, it simply generates a random word from the text. Before, with an incorrect constructor, `equals()`, etc., the original starter message was just random words from *Alice in Wonderland*. Now with a correct `WordGram` class, `BaseMarkov` is generating output from the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model).
 
-Caution: Seeing the output shown above does not necessarily mean that every method of your `WordGram` class is correct. In particular, `BaseMarkov` does not use hashing, and so the `hashCode()` method does not impact it, but you *will* need to correctly implement `toString()` and `hashCode()` before moving on to to the next part.
+*Caution*: Seeing the output shown above does not necessarily mean that every method of your `WordGram` class is correct. In particular, `BaseMarkov` does not use hashing, and so the `hashCode()` method does not impact it, but you *will* need to correctly implement `toString()` and `hashCode()` before moving on to to the next part.
 
 ## Coding Part 2: Developing the HashMarkov Class
 
@@ -239,42 +234,55 @@ In this part you will develop a Markov model for generating random text using `W
 
 Your implementation should have the same behavior as `BaseMarkov` in terms of implementing the interface methods and generating the same output, but it will have different performance properties due to the use of a `HashMap` in training. In particular, `HashMarkov` should create an instance variable `HashMap` that maps `WordGram`s of a given order to `List`s of words that follow that WordGram. The training text should be read (looped over) *exactly once* during the `setTraining()` method to create this map. Subsequently, the `getFollows()` method should simply return the corresponding `List` from the map, or an empty `List` if there is no entry in the map, and this should be used in `getRandomText()` to avoid having to search the training text again for every random word generated.
 
-You can and should use `BaseMarkov` as an example for how to implement the `MarkovInterface`, noting in particular that you *must* override and implement the interface methods. The private *helper* method `getNext()` is not required, but you might consider implementing something analogous or even other private helper methods to keep your `HashMarkov` implementation organized.
+You can and should use `BaseMarkov` as an example for how to implement the `MarkovInterface`, noting in particular that you *must* override and implement the interface methods. The private *helper* method `getNext()` is not required, but you might consider implementing something analogous or even other private helper methods to keep your `HashMarkov` implementation organized. You can expand the sections below for details.
 
-### Debugging Your Code in EfficientMarkov
 <details>
-<summary>Click to Expand</summary>
+<summary>Expand for details on instance variables</summary>
+
+You will need the same instance variables as in `BaseMarkov` for storing the words of the training text, the random number generator, and the order of the model. In addition, you will need a `HashMap` instance variable that maps from `WordGram`s (the keys) to `List<String>` (the values). 
+
+</details>
+
+<details>
+<summary>Expand for details on Constructor</summary>
+
+You must have at least one constructor that takes as input the order of `WordGram`s used in the model. It should initialize the instance variables, similar to `BaseMarkov`.
+
+</details>
+
+<details>
+<summary>Expand for details on setTraining()</summary>
+
+Similar to `BaseMarkov`, your `setTraining()` method should store the words of the training text in an Array of Strings. The easiest way to is to use the method call `text.split("\\s+")` as seen in `BaseMarkov` - the regular expression `\\s+` is used to split on all whitespace, including spaces and newline characters.
+
+In addition, you should start by *clearing the `HashMap` instance variable* (for example, if the name of the variable is `myMap`, you can do this by calling `myMap.clear();`). This ensures that the map does not contain stale data if `setTraining()` is called multiple times on different training texts.
+
+Finally, you should loop through the words in the training text *exactly once* and, for each `WordGram` of the given order in the text, add all of the words that follow it to the corresponding `List<String>` value in your `HashMap` instance variable.
+
+</details>
+
+<details>
+<summary>Expand for details on getRandomText()</summary>
+
+This method should use the `HashMap` instance variable set during `setTraining()` and the `getFollows()` method to generate `length` words of random text one at a time according to the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model). You can use `BaseMarkov` as an example to adapt, for example, how to update the current `WordGram`, loop generating the random text, to see how to use the random number generator to get a random integer index up to a certain bound, etc. Your implementation should *not* loop over the words of the training text again.
+
+</details>
+
+<details>
+<summary>Expand for details on getOrder() and setSeed()</summary>
+
+`getOrder()` is just a getter method that should return the order of the Markov model, stored in an instance variable. `setSeed()` should simply call the `setSeed()` method of the random number generator instance variable and pass the corresponding random seed.
+
+</details>
+
+### Dealing with Randomness
 
 It’s hard enough to debug code without random effects making it even harder. In the `BaseMarkov` class you’re provided, the Random object used for random-number generation is constructed as follows:
 
 `myRandom = new Random(RANDOM_SEED);`
 
-`RANDOM_SEED` is defined to be 1234. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. ***If you use a seed of `RANDOM_SEED` in your `EfficientMarkov` model, you should get the same random text as when the brute-force method from `BaseMarkov` is used.*** This will help you debug your program because you can check your results with those of the code you’re given which you can rely on as being correct. You'll get this behavior "for free" since the first line of your `EfficientMarkov` constructor will be `super(order)` -- which initializes the `myRandom` instance variable.
+`RANDOM_SEED` is defined to be 1234 in the driver method. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. ***If you use a seed of `RANDOM_SEED` in your `HashMarkov` model, you should get the same random text as when the method from `BaseMarkov` is used.*** This will help you debug your program because you can check your results with those of the code you’re given which you can rely on as being correct.
 
-</details>
-
-### Implementing EfficientWordMarkov
-<details>
-<summary>Click to Expand</summary>
-
-You'll model this class on the `EfficientMarkov` class you've already implemented and tested. See the previous section for details. However in this version you will use `WordGram` objects as keys in a map and the instance variable String `myText` from `BaseMarkov` becomes `String[] myWords` in `BaseWordMarkov`. 
-
-You'll create two constructors in `EfficientWordMarkov`: `public EfficientWordMarkov()` and `public EfficientWordMarkov(int order)`. These constructors should be identical to those in `EfficientMarkov` (default order 3, initialize myMap to be a new HashMap).
-
-You'll need to use the code in `BaseWordMarkov` to help reason about how to write `setTraining` in `EfficientWordMarkov`. The `EfficientWordMarkov.getFollows` method is the same as in `EfficientMarkov`, though `myMap` is different. Now it's `Map<WordGram, ArrayList<String>>` since words are used rather than characters. You'll need to reason how to create the map and initialize its contents in `setTraining`.
-
-***In creating an array of words, you should use `text.split("\\s+")` to process the String passed to `setTraining` into an array of "words" separated by whitespace. You'll see this code in `BaseWordMarkov`.***
-
-Some hints about `EfficientWordMarkov` compared with `EfficientMarkov`:
-- Instance variable is `myWords` rather than `myText`, see `BaseWordMarkov` for details.
-- Instead of using `String.substring()` to create a String for every key, you'll create a new `WordGram` for every key in the map.
-- Instead of using a one-character `String` to follow each key, you'll use the appropriate `String` in `myWords` as the string that follows each key.
-- In method `getRandomText` you can call the `shiftAdd` method after finding a following word (by calling `getFollows`). Recall that `shiftAdd` creates a new `WordGram` object, you'll use this as the key for generating the next word at random.
-
-To test your class, use it in the `MarkovDriver` program and compare the output to what's generated by `BaseWordMarkov` just as you did when [Testing `EfficientMarkov`](#testing-efficientmarkov).
-</details>
-
-</details>
 
 ## Analysis Questions
 
