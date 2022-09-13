@@ -207,7 +207,26 @@ You do not need to recompute this `String` each time `toString()` is called -- i
 
 </details>
 
+After correctly implementing the `WordGram` class, re-run the `MarkovDriver`. With the default values (`TEXT_SIZE = 100`, `RANDOM_SEED = 1234`, `MODEL_ORDER = 2`, `PRINT_MODE = true`, and `filename = "data/alice.txt"`) you should see different output than when you first ran the starter code:
 
+```
+Generated 100 words with order 2 Markov Model
+----------------------------------
+Alice; `I daresay it's a set of verses.' `Are they in the distance, and she swam 
+about, trying to touch her. `Poor little thing!' said Alice, `a great girl like you,' 
+(she might well say this), `to go on with the Dutchess, it had made. `He took me 
+for a few minutes to see a little worried. `Just about as it turned a corner, `Oh 
+my ears and whiskers, how late it's getting!' She was close behind it was growing, 
+and very neatly and simply arranged; the only one who had got its head to keep back 
+the wandering hair 
+----------------------------------
+Training time = 0.012 s
+Generating time = 0.063 s
+```
+
+Note in particular how the phrases/sentences seem better connected than what resulted from the starter code. As you will see when inspecting `BaseMarkov`, if it cannot find a given `WordGram` to calculate possible following words, it simply generates a random word from the text. Before, with an incorrect constructor, `equals()`, etc., the original starter message was just random words from *Alice in Wonderland*. Now with a correct `WordGram` class, `BaseMarkov` is generating output from the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model).
+
+Caution: Seeing the output shown above does not necessarily mean that every method of your `WordGram` class is correct. In particular, `BaseMarkov` does not use hashing, and so the `hashCode()` method does not impact it, but you *will* need to correctly implement `toString()` and `hashCode()` before moving on to to the next part.
 
 ## Coding Part 2: Developing the HashMarkov Class
 
