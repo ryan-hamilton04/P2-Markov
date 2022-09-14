@@ -75,7 +75,9 @@ The true mathematical roots are from a 1948 monolog by Claude Shannon, [A Mathem
 
 ## Running Driver Code
 
-The primary driver code for this assignment is located in `MarkovDriver.java`. You should be able to run the `public static void main` method of `MarkovDriver` immediately after cloning the starter code, and should see something like the output shown below.
+The primary driver code for this assignment is located in `MarkovDriver.java`. You should be able to run the `public static void main` method of `MarkovDriver` immediately after cloning the starter code, and should see something like the output shown in the expandable section below (noting that your exact runtimes will likely be different / machine dependent).
+
+<details><summary>Expand for example output of MarkovDriver with starter code</summary>
 
 ```
 Trained on text in data/alice.txt with T=28196 words
@@ -92,7 +94,11 @@ in `why join to drowned `That had if I much did said: stop introduced or said ou
 beautiful go she thank machine it at morsel beauti--FUL an
 ```
 
-This just looks like nonsense for now because the `WordGram` class is not correctly implemented. Inspecting `MarkovDriver` a little more closely, note:
+</details>
+
+This initial output just looks like nonsense for now because the `WordGram` class is not correctly implemented; that will be your first coding task. Before starting to code however, you are encouraged to inspect `MarkovDriver` a little more closely to understand what it is doing. Expand the section below to see a description of the details of the `MarkovDriver` code.
+
+<details><summary>Expand for details on `MarkovDriver`</summary>
 
 - Some static variables used in the main method are defined at the top of class, namely:
   - `TEXT_SIZE` is the number of words to be randomly generated.
@@ -104,6 +110,9 @@ This just looks like nonsense for now because the `WordGram` class is not correc
 - The `generator` then sets the specified random seed. You should get the same result on multiple runs with the same random seed. Feel free to change the seed for fun while developing and running, but *the random seed should be set to 1234 as in the default when submitting for grading*.
 - The `generator` is timed in how long it takes to run two methods: first `setTraining()` and then `getRandomText()`.
 - Finally, values are printed: The random text itself if `PRINT_MODE` is set to true and the time it took to train (that is, for `setTraining()` to run) the Markov model and to generate random text using the model (that is, for `getRandomText` to run). 
+
+</details>
+
 
 ## Coding Part 1: Developing the `WordGram` Class
 
@@ -207,7 +216,9 @@ You do not need to recompute this `String` each time `toString()` is called -- i
 
 </details>
 
-After correctly implementing the `WordGram` class, re-run the `MarkovDriver`. With the default values (`TEXT_SIZE = 100`, `RANDOM_SEED = 1234`, `MODEL_ORDER = 2`, `PRINT_MODE = true`, and `filename = "data/alice.txt"`) you should see different output than when you first ran the starter code:
+After correctly implementing the `WordGram` class, re-run the `MarkovDriver`. With the default values (`TEXT_SIZE = 100`, `RANDOM_SEED = 1234`, `MODEL_ORDER = 2`, `PRINT_MODE = true`, and `filename = "data/alice.txt"`) you should see different output than when you first ran the starter code, something like what is shown in the expandable section below.
+
+<details><summary>Expand for example output of MarkovDriver with correct WordGram</summary>
 
 ```
 Trained on text in data/alice.txt with T=28196 words
@@ -224,9 +235,12 @@ and very neatly and simply arranged; the only one who had got its head to keep b
 the wandering hair
 ```
 
+</details>
+
 Note in particular how the phrases/sentences seem better connected than what resulted from the starter code. As you will see when inspecting `BaseMarkov`, if it cannot find a given `WordGram` to calculate possible following words, it simply generates a random word from the text. Before, with an incorrect constructor, `equals()`, etc., the original starter message was just random words from *Alice in Wonderland*. Now with a correct `WordGram` class, `BaseMarkov` is generating output from the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model).
 
-*Caution*: Seeing the output shown above does not necessarily mean that every method of your `WordGram` class is correct. In particular, `BaseMarkov` does not use hashing, and so the `hashCode()` method does not impact it, but you *will* need to correctly implement `toString()` and `hashCode()` before moving on to to the next part.
+*Caution*: Seeing the output shown above does not necessarily mean that every method of your `WordGram` class is correct. In particular, `BaseMarkov` does not use hashing, and so the `hashCode()` method does not impact it, but you should correctly implement *all* methods of `WordGram` before proceeding to the next part.
+ 
 
 ## Coding Part 2: Developing the HashMarkov Class
 
