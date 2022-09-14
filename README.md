@@ -107,7 +107,7 @@ This just looks like nonsense for now because the `WordGram` class is not correc
 
 ## Coding Part 1: Developing the `WordGram` Class
 
-Your first task is to develop the `WordGram` class itself. You're given an outline of `WordGram.java` with appropriate instance variables declared, as well as stub (not correctly implemented methods.
+Your first task is to develop the `WordGram` class itself. You're given an outline of `WordGram.java` with appropriate instance variables declared, as well as stub (not fully/correctly implemented) methods.
 
 Your task will be to implement these methods in `WordGram` according to the specifications provided. Javadocs in the starter code detail the expected behavior of all methods. For `hashCode`, `equals`, and `toString`, your implementations should conform to the specifications as given in the [documentation for `Object`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html). 
 
@@ -332,7 +332,7 @@ You will submit the assignment on Gradescope. You can access Gradescope through 
 
 Don't forget to upload a PDF for the analysis part of this assignment and mark where you answer each question. This is a separate submission in Gradescope.
 
-After submitting, fill out the reflect form here LINK TO BE ADDED.
+After submitting, fill out the [reflect form here](https://forms.office.com/Pages/ResponsePage.aspx?id=TsVyyzFKnk2xSh6jbfrJTErNjWEU70pGg_ytfEVEPi5UOVUyWEdHNlpDMkdKUTU5T0FCMEtJRkVUNC4u).
 
 For this program grading will be:
 
