@@ -311,14 +311,14 @@ Once you are confident that your `HashMarkov` code is correct, you are ready to 
 
 Answer the following questions in your analysis. You'll submit your analysis as a separate PDF as a separate assignment to Gradescope. Answering these questions will require you to run the driver code to generate timing data and to reason about the algorithms and data structures you have implemented.
 
-For the analysis, let `$N$` denote the length/number of words of the random text being generated. Let `$T$` denote the length/number of words of the training text. Assume that *all words are of at most a constant length* (say, no more than 35 characters).
+For the analysis, let $`N`$ denote the length/number of words of the random text being generated. Let $`T`$ denote the length/number of words of the training text. Assume that *all words are of at most a constant length* (say, no more than 35 characters).
 
 ### Question 1
 
-What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `BaseMarkov` impelementation in terms of `$N$` and `$T$`? State your answers, and justify them in *both* of the following ways.
+What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `BaseMarkov` impelementation in terms of $`N`$ and $`T`$? State your answers, and justify them in *both* of the following ways.
 
 - *Theory*. Explain why you expect `setTraining()` and `getRandomText()` for `BaseMarkov` to have the stated runtime complexity by referencing the algorithms/data structures/code used. Explain the complexity of each operation/method, accounting for any looping, in the code. You may assume that `nextInt` is a constant time operation to generate a random number and `split()` has runtime complexity `$O(T)$` when called on the training text.
-- *Experiment*. Run the main method of `MarkovDriver` with *at least* 3 different data files of varying sizes `$T$` (it is fine to use `alice.txt` for one of them). For each, run the main method with *at least* 3 different values of `TEXT_SIZE` (which corresponds to `$N$`). So you should have a total of at least 9 data points consisting to fill out a table like the one shown below. Explain how your empirical data does or does not conform to your expectations for the runtime complexity of `getRandomText()`.
+- *Experiment*. Run the main method of `MarkovDriver` with *at least* 3 different data files of varying sizes $`T`$ (it is fine to use `alice.txt` for one of them). For each, run the main method with *at least* 3 different values of `TEXT_SIZE` (which corresponds to `$N$`). So you should have a total of at least 9 data points consisting to fill out a table like the one shown below. Explain how your empirical data does or does not conform to your expectations for the runtime complexity of `getRandomText()`.
 
 | Data file    | $`T`$    | $`N`$    | Training Time (s)    | Generating time (s)    |
 | ------------ | -------- | -------- | -------------------- | ---------------------- |
@@ -329,7 +329,7 @@ What is the asymptotic (big O) runtime complexity of the methods: `setTraining()
 
 ### Question 2
 
-Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `HashMarkov` impelementation in terms of `$N$` and `$T$`? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1.
+Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `HashMarkov` impelementation in terms of `$N$` and $`T`$? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1.
 
 ### Question 3
 
