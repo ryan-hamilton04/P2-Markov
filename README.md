@@ -240,7 +240,7 @@ the wandering hair
 Note in particular how the phrases/sentences seem better connected than what resulted from the starter code. As you will see when inspecting `BaseMarkov`, if it cannot find a given `WordGram` to calculate possible following words, it simply generates a random word from the text. Before, with an incorrect constructor, `equals()`, etc., the original starter message was just random words from *Alice in Wonderland*. Now with a correct `WordGram` class, `BaseMarkov` is generating output from the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model).
 
 *Caution*: Seeing the output shown above does not necessarily mean that every method of your `WordGram` class is correct. In particular, `BaseMarkov` does not use hashing, and so the `hashCode()` method does not impact it, but you should correctly implement *all* methods of `WordGram` before proceeding to the next part.
- 
+
 
 ## Coding Part 2: Developing the HashMarkov Class
 
@@ -302,11 +302,7 @@ Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the
 
 ### Running and Testing HashMarkov
 
-It’s hard enough to debug code without random effects making it even harder. In the `BaseMarkov` class you’re provided, the Random object used for random-number generation is constructed as follows:
-
-`myRandom = new Random(RANDOM_SEED);`
-
-`RANDOM_SEED` is defined to be 1234 in the driver method. Using the same seed to initialize the random number stream ensures that the same random numbers are generated each time you run the program. Removing `RANDOM_SEED` and using `new Random()` will result in a different set of random numbers, and thus different text, being generated each time you run the program. This is more amusing, but harder to debug. **If you use a seed of `RANDOM_SEED` in your `HashMarkov` model, you should get the same random text as when the method from `BaseMarkov` is used.**
+It’s hard enough to debug code without random effects making it even harder. That's why the `MarkovDriver` sets a `RANDOM_SEED` to initialize the random number generator. You are welcome to change that value to experiment and play around with different random generations of text, but you should be sure to set it to 1234 for testing/submitting. Note that *if you use the same value for `RANDOM_SEED` you should get the same random text for `BaseMarkov` and `HashMarkov`*, if not, something is likely wrong with the implementation.
 
 Once you are confident that your `HashMarkov` code is correct, you are ready to move on to the analysis questions.
 
