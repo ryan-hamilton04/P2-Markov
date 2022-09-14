@@ -262,6 +262,13 @@ Finally, you should loop through the words in the training text *exactly once* a
 </details>
 
 <details>
+<summary>Expand for details on getFollows()</summary>
+
+Just like in `BaseMarkov`, the `getFollows` method takes a `WordGram` object `wgram` as a parameter and should return a `List` of all the words (represented as `String`s) that follow from `wgram` in the training text. The `HashMarkov` implementation should be more efficient, as it should *not* loop over the training text, but should instead simply lookup the `List` in the `HashMap` instance variable intialized during `setTraining()`, or return an empty `List` if the `wgram` is not a key in the map.
+
+</details>
+
+<details>
 <summary>Expand for details on getRandomText()</summary>
 
 This method should use the `HashMap` instance variable set during `setTraining()` and the `getFollows()` method to generate `length` words of random text one at a time according to the Markov model described in the intro section [What is a Markov Model?](#what-is-a-markov-model). 
