@@ -353,4 +353,8 @@ After submitting, fill out the [reflect form here](https://forms.office.com/Page
 
 For this program grading will be:
 
-TO BE ADDED
+| Points | Grading Category |
+| ------ | ---------------- |
+| 7      | WordGram code (autograded)   |
+| 8      | HashMarkov code (autograded) |
+| 5      | Analysis (hand-graded)       |
