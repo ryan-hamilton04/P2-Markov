@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Emily Du
  * @author Havish Malladi
  */
-public class HashMarkovTest {
+public class MarkovTest {
 
     private MarkovInterface getModel(int order) {
         return new BaseMarkov(order);
