@@ -8,6 +8,7 @@ This is the directions document for Project P2 Markov in CompSci 201 at Duke Uni
   - [What is a WordGram?](#what-is-a-wordgram)
   - [What is a Markov Model?](#what-is-a-markov-model)
 - [Running Driver Code](#running-driver-code)
+- [JUnit Tests](#junit-tests)
 - [Coding Part 1: Developing the WordGram Class](#coding-part-1-developing-the-wordgram-class)
 - [Coding Part 2: Developing the HashMarkov Class](#coding-part-2-developing-the-hashmarkov-class)
 - [Analysis Questions](#analysis-questions)
@@ -110,6 +111,39 @@ This initial output just looks like nonsense for now because the `WordGram` clas
 - The `generator` then sets the specified random seed. You should get the same result on multiple runs with the same random seed. Feel free to change the seed for fun while developing and running, but *the random seed should be set to 1234 as in the default when submitting for grading*.
 - The `generator` is timed in how long it takes to run two methods: first `setTraining()` and then `getRandomText()`.
 - Finally, values are printed: The random text itself if `PRINT_MODE` is set to true and the time it took to train (that is, for `setTraining()` to run) the Markov model and to generate random text using the model (that is, for `getRandomText` to run). 
+
+</details>
+
+## JUnit Tests
+
+To help test your `WordGram` and `HashMarkov` implementations, you are given some *unit tests* in `WordGramTest.java` and `MarkovTest.java`, both located in the `src` folder. A unit test specifies a given input and asserts an expected outcome of running a method, then runs your code to confirm that the expected outcome occurs. You can see the exact tests inside of the two files. Note that by default (to avoid compiler errors in the starter code), `MarkovTest` is testing the `BaseMarkov` implementation. When you are ready to test your `HashMarkov` implementation, you will want to change which model is created in the `getModel` method of `MarkovTest` at the position shown in the screenshow below.
+
+<details>
+<summary>Expand here for screenshot running JUnit test in VS Code</summary>
+
+<div align="center">
+  <img width="300" height="300" src="markovTest.png">
+</div>
+
+</details>
+
+In order **to run these tests** inside VS Code, click the [Test Explorer](https://code.visualstudio.com/docs/java/java-testing#_test-explorer) (beaker) icon on the left side of VS Code (it should be the lowest icon on the panel). You can expand the arrow for `p2-markov` and the default package to see two sets of tests: One for `MarkovTest` and another for `WordGramTest`. You can click the run triangle next to a test package to run the tests. Screenshot example in the expandable section below.
+
+<details>
+<summary>Expand here for screenshot running JUnit test in VS Code</summary>
+
+<div align="center">
+  <img width="300" height="300" src="p2-figures/testResults.png">
+</div>
+
+</details>
+
+The main benefit of supplying these *local* (on your own machine) tests is to allow you to catch potential problems quickly without needing to rely on the (somewhat slower) Gradescope autograder until you are reasonably confident in your code. You do not have to use them for a grade.
+
+<details>
+<summary>Expand for optional JUnit details</summary>
+
+We use a major Java library called [**JUnit**](https://junit.org/junit5/) (specifically version 5) for creating and running these unit tests. It is not part of the standard Java API, so we have supplied the requisite files `JAR` files (Java ARchive files) along with this project in a folder called `lib` (you don't need to do anything with this).   
 
 </details>
 
@@ -216,6 +250,8 @@ You do not need to recompute this `String` each time `toString()` is called -- i
 
 </details>
 
+After implementing the `WordGram` class, you can run the `WordGramTest` [JUnit tests](#junit-tests).
+
 After correctly implementing the `WordGram` class, re-run the `MarkovDriver`. With the default values (`TEXT_SIZE = 100`, `RANDOM_SEED = 1234`, `MODEL_ORDER = 2`, `PRINT_MODE = true`, and `filename = "data/alice.txt"`) you should see different output than when you first ran the starter code, something like what is shown in the expandable section below.
 
 <details><summary>Expand for example output of MarkovDriver with correct WordGram</summary>
@@ -304,7 +340,11 @@ Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the
 
 It’s hard enough to debug code without random effects making it even harder. That's why the `MarkovDriver` sets a `RANDOM_SEED` to initialize the random number generator. You are welcome to change that value to experiment and play around with different random generations of text, but you should be sure to set it to 1234 for testing/submitting. Note that *if you use the same value for `RANDOM_SEED` you should get the same random text for `BaseMarkov` and `HashMarkov`*, if not, something is likely wrong with the implementation.
 
-Once you are confident that your `HashMarkov` code is correct, you are ready to move on to the analysis questions.
+You can also test your `HashMarkov` class with the `MarkovTest` [JUnit tests](#junit-tests). Don't forget to edit the `getModel` method of `MarkovTest` to use a `HashMarkov` implementation when running your tests.
+
+Note that JUnit tests and Gradescope tests will not check the efficiency of the `HashMarkov` implementation. Instead, you will need to rely on your conceptual understanding and empirical timing data which you can aquire by running `MarkovDriver` using a `HashMarkov` implementation. You will be asked to reason about both in the Analysis section.
+
+Once you are confident that your `HashMarkov` code is correct, you are ready to submit to Gradescope and then move on to the analysis questions.
 
 
 ## Analysis Questions

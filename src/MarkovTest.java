@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MarkovTest {
 
     private MarkovInterface getModel(int order) {
+        // Choose which implementation to test here
         return new BaseMarkov(order);
         // return new HashMarkov(order);
     }
