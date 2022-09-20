@@ -12,7 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HashMarkovTest {
 
     private MarkovInterface getModel(int order) {
-        return new HashMarkov(order);
+        return new BaseMarkov(order);
+        // return new HashMarkov(order);
     }
 
 
@@ -27,7 +28,7 @@ public class HashMarkovTest {
         String[] must = {"h h i", "h i i", "i i h", "i h h", "h h i i h h i i"};
         String[] notExist = {"h h h", "i i i", "h i h", "i h i"};
 
-        MarkovInterface markov = new HashMarkov(2);
+        MarkovInterface markov = getModel(2);
         markov.setTraining(training);
         String output = "";
         while (output.length() < 15) {
@@ -61,7 +62,7 @@ public class HashMarkovTest {
         String testString = testStringBuilder.toString();
 
         for (int k = 1; k <= maxOrder; k++) {
-            MarkovInterface markov = new HashMarkov(1);
+            MarkovInterface markov = getModel(1);
             markov.setTraining(testString);
             String output = markov.getRandomText(length / 5);
             assertEquals("cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf cdf", output);
@@ -80,7 +81,7 @@ public class HashMarkovTest {
         int maxOrder = 10;
 
         for (int k = 1; k <= maxOrder; k++) {
-            MarkovInterface markov = new HashMarkov(k);
+            MarkovInterface markov = getModel(k);
             markov.setSeed(123);
             markov.setTraining(testString);
             String output = markov.getRandomText(length / 5);
@@ -120,7 +121,7 @@ public class HashMarkovTest {
 
         for (int i = 0; i < in.length; i++) {
             int k = in[i].length();
-            MarkovInterface markov = new HashMarkov(k);
+            MarkovInterface markov = getModel(k);
             markov.setTraining(testString);
             List<String> expected = Arrays.asList(out[i]);
             List<String> actual = markov.getFollows(in[i]);
@@ -155,7 +156,7 @@ public class HashMarkovTest {
 
         for (int i = 0; i < in.length; i++) {
             int k = in[i].length();
-            MarkovInterface markov = new HashMarkov(k);
+            MarkovInterface markov = getModel(k);
             markov.setTraining(testString);
             List<String> expected = Arrays.asList(out[i]);
             List<String> actual = markov.getFollows(in[i]);
