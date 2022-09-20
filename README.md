@@ -64,6 +64,8 @@ We begin with a random k-gram, suppose we get `[it, is]`. This appears 5 times i
 
 Rather than calculating these probabilities explicitly, your code will use them implicitly. In particular, the `getFollows` method will return a `List` of *all* of the words that follow after a given k-gram in the training text (including duplicates), and then you will choose one of these words uniformly at random. Words that more commonly follow will be selected with higher probability by virtue of being duplicated in the `List`.
 
+Suppose we choose `ok` as the next random word. Then the random text generated so far is `it is ok`, and the current `WordGram` of order 2 we are using would be updated to `[is, ok]`. We then again find the following words in the training text, and so on and so forth, until we have generated the desired number of random words.
+
 Of course, for a very small training text these probabilities may not be very meaningful, but random generative models like this can be much more powerful when supplied with large quantities of training data, in this case meaning very large training texts.
 
 <details>
@@ -239,7 +241,7 @@ For example, if `WordGram w` is
 
 then the method call `w.shiftAdd("lemon")` should return a new `WordGram` containing {"pear", "cherry", "lemon"}. Note that this new `WordGram` will not equal w.
 
-Note: To implement shiftAdd you'll need to create a new `WordGram` object. The code in the method will still be able to assign values to the private instance variables of that object directly since the `shiftAdd()` method is in the `WordGram` class.
+Note: To implement `shiftAdd()` you'll need to create a new `WordGram` object. The code in the method will still be able to assign values to the private instance variables of that object directly since the `shiftAdd()` method is in the `WordGram` class.
 
 </details>
 
@@ -284,7 +286,7 @@ Note in particular how the phrases/sentences seem better connected than what res
 
 In this part you will develop a Markov model for generating random text using `WordGram`s and hashing. In particular, you should create a new `HashMarkov.java` file with a single public `HashMarkov` class that implements the `MarkovInterface`. 
 
-Your implementation should have the same behavior as `BaseMarkov` in terms of implementing the interface methods and generating the same output, but it will have different performance properties due to the use of a `HashMap` in training. In particular, `HashMarkov` should create an instance variable `HashMap` that maps `WordGram`s of a given order to `List`s of words that follow that WordGram. The training text should be read (looped over) *exactly once* during the `setTraining()` method to create this map. Subsequently, the `getFollows()` method should simply return the corresponding `List` from the map, or an empty `List` if there is no entry in the map, and this should be used in `getRandomText()` to avoid having to search the training text again for every random word generated.
+Your implementation should have the same behavior as `BaseMarkov` in terms of implementing the interface methods and generating the same output, but it will have different performance properties due to the use of a `HashMap` in training. In particular, `HashMarkov` should create an instance variable `HashMap` that maps `WordGram`s of a given order to `List`s of words that follow that `WordGram`. The training text should be read (looped over) *exactly once* during the `setTraining()` method to create this map. Subsequently, the `getFollows()` method should simply return the corresponding `List` from the map, or an empty `List` if there is no entry in the map, and this should be used in `getRandomText()` to avoid having to search the training text again for every random word generated.
 
 You can and should use `BaseMarkov` as an example for how to implement the `MarkovInterface`, noting in particular that you *must* override and implement the interface methods. The private *helper* method `getNext()` is not required, but you might consider implementing something analogous or even other private helper methods to keep your `HashMarkov` implementation organized. You can expand the sections below for details.
 
@@ -362,18 +364,20 @@ For the analysis, let $`N`$ denote the length/number of words of the random text
 What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `BaseMarkov` impelementation in terms of $`N`$ and $`T`$? State your answers, and justify them in *both* of the following ways.
 
 - *Theory*. Explain why you expect `setTraining()` and `getRandomText()` for `BaseMarkov` to have the stated runtime complexity by referencing the algorithms/data structures/code used. Explain the complexity of each operation/method, accounting for any looping, in the code. You may assume that `nextInt` is a constant time operation to generate a random number and `split()` has runtime complexity $`O(T)`$ when called on the training text.
-- *Experiment*. Run the main method of `MarkovDriver` with *at least* 3 different data files of varying sizes $`T`$ (it is fine to use `alice.txt` for one of them). For each, run the main method with *at least* 3 different values of `TEXT_SIZE` (which corresponds to $`N`$). So you should have a total of at least 9 data points consisting to fill out a table like the one shown below. Explain how your empirical data does or does not conform to your expectations for the runtime complexity of `getRandomText()`.
+- *Experiment*. Run the main method of `MarkovDriver` with *at least* 3 different data files of varying sizes $`T`$ (it is fine to use `alice.txt` for one of them). For each, run the main method with *at least* 3 different values of `TEXT_SIZE` (which corresponds to $`N`$). So you should have a total of at least 9 data points; use these to fill out a table like the one shown below. Explain how your empirical data does or does not conform to your expectations for the runtime complexity of `getRandomText()`.
 
 | Data file    | $`T`$    | $`N`$    | Training Time (s)    | Generating time (s)    |
 | ------------ | -------- | -------- | -------------------- | ---------------------- |
 | alice.txt    | 28,196   | 100      | 0.012                | 0.060                  |
 | ...          | ....     | ...      | ...                  | ...                    |
 
-*Suggestions*: You will likely get the clearest data if you include very different values for $`T`$ and $`N`$. Two of the largest text files you might use are `kjv10.txt` and `shakespeare.txt`. You can set $`N`$ directly to much larger values by changing `TEXT_SIZE`, for example to 1,000 or 10,000. When doing so, you can set `PRINT_MODE` to `false` to avoid having a huge amount of text printed. Note that `BaseMarkov` is not necessarily an efficient implementation, so it may take a long time to run with large $`T`$ and $`N`$. You do not need to run anything for multiple minutes just for data collection for this assignment.  
+*Suggestions*: You will likely get the clearest data if you include very different values for $`T`$ and $`N`$, and preferably larger values (for example, `testfile.txt` may not provide the most informative timing data). Two of the largest text files you might use are `kjv10.txt` and `shakespeare.txt`. You can set $`N`$ directly to much larger values by changing `TEXT_SIZE`, for example to 1,000 or 10,000. When doing so, you can set `PRINT_MODE` to `false` in `MarkovDriver` to avoid having a large amount of text printed to your terminal. Note that `BaseMarkov` is not necessarily an efficient implementation, so it may take a long time to run with large $`T`$ and $`N`$. You do not need to run anything for multiple minutes just for data collection for this assignment.  
 
 ### Question 2
 
-Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `HashMarkov` impelementation in terms of $`N`$ and $`T`$? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1.
+Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `HashMarkov` impelementation in terms of $`N`$ and $`T`$? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1. 
+
+You can use the same training texts and values for $`N`$ as you chose in question 1, with the same suggestions metnioend there. Note that, implemented correctly, `HashMarkov` should be noticably more efficient at generating random text than `BaseMarkov`, and this should be evident in your analysis.
 
 ### Question 3
 
