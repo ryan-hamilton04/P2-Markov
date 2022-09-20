@@ -305,9 +305,9 @@ You must have at least one constructor that takes as input the order of `WordGra
 <details>
 <summary>Expand for details on setTraining()</summary>
 
-Similar to `BaseMarkov`, your `setTraining()` method should store the words of the training text in an Array of Strings. The easiest way to is to use the method call `text.split("\\s+")` as seen in `BaseMarkov` - the regular expression `\\s+` is used to split on all whitespace, including spaces and newline characters.
+Similar to `BaseMarkov`, your `setTraining()` method should store the words of the training text in an Array of Strings. The easiest way is to use the method call `text.split("\\s+")` as seen in `BaseMarkov` - the regular expression `\\s+` is used to split on all whitespace, including spaces and newline characters.
 
-In addition, you should start by *clearing the `HashMap` instance variable* (for example, if the name of the variable is `myMap`, you can do this by calling `myMap.clear();`). This ensures that the map does not contain stale data if `setTraining()` is called multiple times on different training texts.
+In addition, you should start by clearing the `HashMap` instance variable (for example, if the name of the variable is `myMap`, you can do this by calling `myMap.clear();`). This ensures that the map does not contain stale data if `setTraining()` is called multiple times on different training texts.
 
 Finally, you should loop through the words in the training text *exactly once* and, for each `WordGram` of the given order in the text, add all of the words that follow it to the corresponding `List<String>` value in your `HashMap` instance variable.
 
@@ -327,6 +327,8 @@ This method should use the `HashMap` instance variable set during `setTraining()
 
 You can use `BaseMarkov` as an example to adapt, for example, how to update the current `WordGram`, loop generating the random text, to see how to use the random number generator to get a random integer index up to a certain bound, etc. Like `BaseMarkov`, in the event that there is a `WordGram` with no word that follows (i.e., `getFollows()` returns an empty list), you should choose a word at random from the training text. 
 
+Note that you should not use the random number generator unecessarily, else your `HashMarkov` implementation may generate different results from `BaseMarkov` on the same random seed. In particular, you should only call `nextInt()` on the random number generator once to get the starting `WordGram` and once per word generated after that - again, see `BaseMarkov` for an example.
+
 Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the training text again every time it generates a next word.
 
 </details>
@@ -340,7 +342,7 @@ Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the
 
 ### Running and Testing HashMarkov
 
-It’s hard enough to debug code without random effects making it even harder. That's why the `MarkovDriver` sets a `RANDOM_SEED` to initialize the random number generator. You are welcome to change that value to experiment and play around with different random generations of text, but you should be sure to set it to 1234 for testing/submitting. Note that *if you use the same value for `RANDOM_SEED` you should get the same random text for `BaseMarkov` and `HashMarkov`*, if not, something is likely wrong with the implementation.
+The `MarkovDriver` sets a `RANDOM_SEED` to initialize the random number generator. You are welcome to change that value to experiment and play around with different random generations of text, but you should be sure to set it to 1234 for testing/submitting. Note that *if you use the same value for `RANDOM_SEED` you should get the same random text for `BaseMarkov` and `HashMarkov`*, if not, something is likely wrong with the implementation.
 
 You can also test your `HashMarkov` class with the `MarkovTest` [JUnit tests](#junit-tests). Don't forget to edit the `getModel` method of `MarkovTest` to use a `HashMarkov` implementation when running your tests.
 
