@@ -124,7 +124,7 @@ Note that by default (to avoid compiler errors in the starter code), `MarkovTest
 <summary>Expand here for screenshot of getModel in MarkovTest</summary>
 
 <div align="center">
-  <img width="300" height="300" src="figures/markovTest.png">
+  <img width="400" height="200" src="figures/markovTest.png">
 </div>
 
 </details>
@@ -135,7 +135,7 @@ In order **to run these tests** inside VS Code, click the [Test Explorer](https:
 <summary>Expand here for screenshot running JUnit test in VS Code</summary>
 
 <div align="center">
-  <img width="300" height="300" src="p2-figures/testResults.png">
+  <img width="300" height="300" src="figures/testResults.png">
 </div>
 
 </details>
