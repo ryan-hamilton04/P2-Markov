@@ -329,7 +329,10 @@ This method should use the `HashMap` instance variable set during `setTraining()
 
 You can use `BaseMarkov` as an example to adapt, for example, how to update the current `WordGram`, loop generating the random text, to see how to use the random number generator to get a random integer index up to a certain bound, etc. Like `BaseMarkov`, in the event that there is a `WordGram` with no word that follows (i.e., `getFollows()` returns an empty list), you should choose a word at random from the training text. 
 
-Note that you should not use the random number generator unecessarily, else your `HashMarkov` implementation may generate different results from `BaseMarkov` on the same random seed. In particular, you should only call `nextInt()` on the random number generator once to get the starting `WordGram` and once per word generated after that - again, see `BaseMarkov` for an example.
+Note that, in order to adhere to the specification that `HashMarkov` should generate the same random text as `BaseMarkov` given the same random seed, **you will need to use the random number generator in the same way as `BaseMarkov`, so follow the `nextInt()` calls from `BaseMarkov` carefully.** In particular:
+- Make one call to `nextInt()` at the beginning to get the initial random `WordGram`,
+- Make one call to `nextInt()` at every iteration of the main text generating loop to get a random word from a `List`, and
+- Make one additional call to `nextInt()` on iterations where the initial following `List` is empty and you need to add a random word to the `List`. Note that in this case, `BaseMarkov` actually makes two calls to `nextInt()` to generate a single random word. (This isn't strictly necessary, but `HashMarkov` will have to do the same to generate the same output as `BaseMarkov` in general).
 
 Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the training text again every time it generates a next word.
 
