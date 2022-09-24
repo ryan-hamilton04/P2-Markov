@@ -15,6 +15,7 @@ public class MarkovTest {
         // Choose which implementation to test here
         return new BaseMarkov(order);
         // return new HashMarkov(order);
+
     }
 
 
@@ -202,7 +203,7 @@ public class MarkovTest {
      * Helper method to verify output data from an input with no repeats
      */
     private static boolean checkOutputOfNoRepeatInput(String actual, int k) {
-        String[] expectedOutputs = new String[] {
+        String[] acceptedOutputs1 = new String[] {
                 "ag x c v b n m aa ab ac ad ae af ag ae af ag ae af ag",
                 "b n m aa ab ac ad ae af ag i p o ae aa ae r y y v",
                 "g h j k l z x c v b n m aa ab ac ad ae af ag aa",
@@ -214,8 +215,20 @@ public class MarkovTest {
                 "i o p a s d f g h j k l z x c v b n m aa",
                 "g h j k l z x c v b n m aa ab ac ad ae af ag s"
         };
+        String[] acceptedOutputs2 = new String[] {
+                "ag x c v b n m aa ab ac ad ae af ag a s d f g h",
+                "b n m aa ab ac ad ae af ag i s p x o a ae k aa u",
+                "g h j k l z x c v b n m aa ab ac ad ae af ag aa",
+                "e r t y u i o p a s d f g h j k l z x c",
+                "w e r t y u i o p a s d f g h j k l z x",
+                "g h j k l z x c v b n m aa ab ac ad ae af ag a",
+                "k l z x c v b n m aa ab ac ad ae af ag s p x o",
+                "t y u i o p a s d f g h j k l z x c v b",
+                "i o p a s d f g h j k l z x c v b n m aa",
+                "g h j k l z x c v b n m aa ab ac ad ae af ag s"
+        };
 
-        return actual.equals(expectedOutputs[k - 1]);
+        return actual.equals(acceptedOutputs1[k - 1]) || actual.equals(acceptedOutputs2[k-1]);
     }
 
 }
