@@ -12,7 +12,7 @@ This is the directions document for Project P2 Markov in CompSci 201 at Duke Uni
 - [Coding Part 1: Developing the WordGram Class](#coding-part-1-developing-the-wordgram-class)
 - [Coding Part 2: Developing the HashMarkov Class](#coding-part-2-developing-the-hashmarkov-class)
 - [Analysis Questions](#analysis-questions)
-- [Submitting, Reflect, Grading](#submitting-reflect-grading)
+- [Submitting and Grading](#submitting-and-grading)
 
 
 ## Introduction
@@ -394,7 +394,7 @@ Answer one or both of the following related questions:
 There is no right or wrong answer to either question; we are looking for one or two paragraphs of thoughtful reflection.
 
 
-## Submitting, Reflect, Grading
+## Submitting and Grading
 You will submit the assignment on Gradescope. You can access Gradescope through the tab on Sakai. Please take note that changes/commits on GitLab are NOT automatically synced to Gradescope. You are welcome to submit as many times as you like, only the most recent submission will count for a grade.
 
 Don't forget to upload a PDF for the analysis part of this assignment and mark where you answer each question. This is a separate submission in Gradescope.
