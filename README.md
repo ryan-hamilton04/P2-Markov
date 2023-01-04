@@ -1,6 +1,6 @@
-# Project 2: Markov, Fall 2022
+# Project 2: Markov, Spring 2023
 
-This is the directions document for Project P2 Markov in CompSci 201 at Duke University, Fall 2022. [This document details the workflow](hhttps://coursework.cs.duke.edu/cs-201-fall-22/resources-201/-/blob/main/projectWorkflow.md) for downloading the starter code for the project, updating your code on coursework using Git, and ultimately submitting to Gradescope for autograding.
+This is the directions document for Project P2 Markov in CompSci 201 at Duke University, Spring 2023. [This document details the workflow](https://coursework.cs.duke.edu/cs-201-spring-23/resources-201/-/blob/main/projectWorkflow.md) for downloading the starter code for the project, updating your code on coursework using Git, and ultimately submitting to Gradescope for autograding.
 
 ## Outline
 
@@ -331,8 +331,7 @@ You can use `BaseMarkov` as an example to adapt, for example, how to update the 
 
 Note that, in order to adhere to the specification that `HashMarkov` should generate the same random text as `BaseMarkov` given the same random seed, **you will need to use the random number generator in the same way as `BaseMarkov`, so follow the `nextInt()` calls from `BaseMarkov` carefully.** In particular:
 - Make one call to `nextInt()` at the beginning to get the initial random `WordGram`,
-- Make one call to `nextInt()` at every iteration of the main text generating loop to get a random word from a `List`, and
-- Make one additional call to `nextInt()` on iterations where the initial following `List` is empty and you need to add a random word to the `List`. Note that in this case, `BaseMarkov` actually makes two calls to `nextInt()` to generate a single random word. (This isn't strictly necessary, but `HashMarkov` will have to do the same to generate the same output as `BaseMarkov` in general).
+- Make one call to `nextInt()` at every iteration of the main text generating loop. Either you need to a random word from a the `getFollows` list, or you need to get a random word from the entire text. See the `getNext` method of `BaseMarkov` for an example.
 
 Unlike `BaseMarkov`, Your implementation should *not* loop over the words of the training text again every time it generates a next word.
 
@@ -378,7 +377,7 @@ What is the asymptotic (big O) runtime complexity of the methods: `setTraining()
 
 ### Question 2
 
-Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` `getRandomText()` for the `HashMarkov` impelementation in terms of $`N`$ and $`T`$? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1. 
+Same as Question 1, but for `HashMarkov` instead of `BaseMarkov`: What is the asymptotic (big O) runtime complexity of the methods: `setTraining()` and `getRandomText()` for the `HashMarkov` impelementation in terms of $`N`$ and $`T`$? State your answers, and justify them in *theory and experiment* exactly as you did for Question 1. 
 
 You can use the same training texts and values for $`N`$ as you chose in question 1, with the same suggestions metnioend there. Note that, implemented correctly, `HashMarkov` should be noticably more efficient at generating random text than `BaseMarkov`, and this should be evident in your analysis.
 
@@ -396,11 +395,10 @@ There is no right or wrong answer to either question; we are looking for one or 
 
 
 ## Submitting, Reflect, Grading
-You will submit the assignment on Gradescope. You can access Gradescope through the tab on Sakai.Be sure your final program is in your Git repository before you submit it for autograding on Gradescope. Please take note that changes/commits on GitLab are NOT automatically synced to Gradescope. You are welcome to submit as many times as you like, only the most recent submission will count for a grade.
+You will submit the assignment on Gradescope. You can access Gradescope through the tab on Sakai. Please take note that changes/commits on GitLab are NOT automatically synced to Gradescope. You are welcome to submit as many times as you like, only the most recent submission will count for a grade.
 
 Don't forget to upload a PDF for the analysis part of this assignment and mark where you answer each question. This is a separate submission in Gradescope.
 
-After submitting, fill out the [reflect form here](https://forms.office.com/Pages/ResponsePage.aspx?id=TsVyyzFKnk2xSh6jbfrJTErNjWEU70pGg_ytfEVEPi5UOVUyWEdHNlpDMkdKUTU5T0FCMEtJRkVUNC4u).
 
 For this program grading will be:
 

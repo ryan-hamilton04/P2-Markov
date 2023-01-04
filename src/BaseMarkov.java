@@ -81,10 +81,12 @@ public class BaseMarkov implements MarkovInterface {
 		List<String> follows = getFollows(wgram);
 		if (follows.size() == 0) {
 			int randomIndex = myRandom.nextInt(myWords.length);
-			follows.add(myWords[randomIndex]);
+			return myWords[randomIndex];
 		}
-		int randomIndex = myRandom.nextInt(follows.size());
-		return follows.get(randomIndex);
+		else {
+			int randomIndex = myRandom.nextInt(follows.size());
+			return follows.get(randomIndex);
+		}
 	}
 
 
