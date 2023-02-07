@@ -398,12 +398,3 @@ There is no right or wrong answer to either question; we are looking for one or 
 You will submit the assignment on Gradescope. You can access Gradescope through the tab on Sakai. Please take note that changes/commits on GitLab are NOT automatically synced to Gradescope. You are welcome to submit as many times as you like, only the most recent submission will count for a grade.
 
 Don't forget to upload a PDF for the analysis part of this assignment and mark where you answer each question. This is a separate submission in Gradescope.
-
-
-For this program grading will be:
-
-| Points | Grading Category |
-| ------ | ---------------- |
-| 7      | WordGram code (autograded)   |
-| 8      | HashMarkov code (autograded) |
-| 5      | Analysis (hand-graded)       |
