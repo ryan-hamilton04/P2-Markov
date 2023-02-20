@@ -84,7 +84,6 @@ public class WordGram {
 	public int hashCode() {
 		if(myHash == 0){
 			myHash = this.toString().hashCode();
-		
 		}
 		return myHash;
 	}
@@ -114,9 +113,10 @@ public class WordGram {
 	 */
 	@Override
 	public String toString() {
-		if(myToString == null){
+		/*if(myToString == null){
 			myToString = String.join(" ", myWords);
 		}
-		return myToString;
+		return myToString;*/
+		return String.join(" ", myWords);
 	}
 }
