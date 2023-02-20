@@ -117,6 +117,7 @@ public class WordGram {
 			myToString = String.join(" ", myWords);
 		}
 		return myToString;*/
-		return String.join(" ", myWords);
+		myToString = String.join(" ", myWords);
+		return myToString;
 	}
 }
