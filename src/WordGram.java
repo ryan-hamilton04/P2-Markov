@@ -66,11 +66,12 @@ public class WordGram {
 		if (! (o instanceof WordGram) || o == null){
 			return false;
 		}
-		WordGram other = (WordGram) o;
-		if (Arrays.equals(this.myWords, other.myWords)){
-			return true;
+		WordGram wg = (WordGram) o;
+		if (!Arrays.equals(this.myWords, wg.myWords))
+		{
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 
