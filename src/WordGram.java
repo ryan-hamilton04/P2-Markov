@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 /**
  * A WordGram object represents an immutable
@@ -41,8 +40,8 @@ public class WordGram {
 	 * @throws IndexOutOfBoundsException if index < 0 or index >= length()
 	 */
 	public String wordAt(int index) {
-		if (index < 0 || index >= myWords.length){
-			throw new IndexOutOfBoundsException("bad index at "+index);
+		if (index < 0 || index >= myWords.length) {
+			throw new IndexOutOfBoundsException("bad index in wordAt "+index);
 		}
 		return myWords[index];
 	}
@@ -66,12 +65,16 @@ public class WordGram {
 		if (! (o instanceof WordGram) || o == null){
 			return false;
 		}
-		WordGram wg = (WordGram) o;
-		if (!Arrays.equals(this.myWords, wg.myWords))
-		{
+		WordGram other = (WordGram) o;
+		if (this.length() != other.length()){
 			return false;
 		}
-		return true;
+		boolean is_equal = true;
+		for (int i=0;i<this.length();i++){
+			is_equal = is_equal && (this.wordAt(i).equals(other.wordAt(i)));
+		}
+		return is_equal;
+
 	}
 
 
@@ -82,8 +85,8 @@ public class WordGram {
 	 */
 	@Override
 	public int hashCode() {
-		if(myHash == 0){
-			myHash = this.toString().hashCode();
+		if (this.myHash == 0) {
+			this.myHash = this.toString().hashCode();
 		}
 		return myHash;
 	}
@@ -98,12 +101,14 @@ public class WordGram {
 	 * @return new WordGram
 	 */
 	public WordGram shiftAdd(String last) {
-		WordGram other = new WordGram(myWords, 0, myWords.length);
-		for (int i = 1; i < myWords.length; i++){
-			other.myWords[i-1] = other.myWords[i];
+		WordGram wg = new WordGram(myWords,0,myWords.length);
+		wg.myWords = new String[myWords.length];
+		for (int i=0;i<myWords.length-1;i++){
+			wg.myWords[i] = this.myWords[i+1];
 		}
-		other.myWords[other.length() - 1] = last;
-		return other;
+		wg.myWords[myWords.length-1] = last;
+		return wg;
+
 	}
 
 
@@ -113,11 +118,9 @@ public class WordGram {
 	 */
 	@Override
 	public String toString() {
-		/*if(myToString == null){
+		if(myToString == null){
 			myToString = String.join(" ", myWords);
 		}
-		return myToString;*/
-		myToString = String.join(" ", myWords);
 		return myToString;
 	}
 }
