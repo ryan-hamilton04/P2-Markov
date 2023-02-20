@@ -69,12 +69,12 @@ public class WordGram {
 		if (this.length() != other.length()){
 			return false;
 		}
-		boolean is_equal = true;
-		for (int i=0;i<this.length();i++){
-			is_equal = is_equal && (this.wordAt(i).equals(other.wordAt(i)));
+		for (int i = 0; i < myWords.length; i++) {
+			if (!myWords[i].equals(other.wordAt(i))) {
+				return false;
+			}
 		}
-		return is_equal;
-
+		return true;
 	}
 
 
@@ -85,8 +85,8 @@ public class WordGram {
 	 */
 	@Override
 	public int hashCode() {
-		if (this.myHash == 0) {
-			this.myHash = this.toString().hashCode();
+		if (myHash == 0) {
+			myHash = this.toString().hashCode();
 		}
 		return myHash;
 	}
@@ -101,14 +101,12 @@ public class WordGram {
 	 * @return new WordGram
 	 */
 	public WordGram shiftAdd(String last) {
-		WordGram wg = new WordGram(myWords,0,myWords.length);
-		wg.myWords = new String[myWords.length];
-		for (int i=0;i<myWords.length-1;i++){
-			wg.myWords[i] = this.myWords[i+1];
+		String[] newWords = new String[myWords.length];
+		for (int i = 0; i < myWords.length - 1; i++) {
+			newWords[i] = myWords[i+1];
 		}
-		wg.myWords[myWords.length-1] = last;
-		return wg;
-
+		newWords[myWords.length-1] = last;
+    	return new WordGram(newWords, 0, newWords.length);
 	}
 
 
