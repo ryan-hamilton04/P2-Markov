@@ -28,11 +28,13 @@ public class HashMarkov implements MarkovInterface {
     
         for (int i = 0; i <= words.length - myOrder; i++) {
             WordGram wg = new WordGram(words, i, myOrder);
-            String next = words[i + myOrder];
-    
             if (!myMap.containsKey(wg)) {
                 myMap.put(wg, new ArrayList<String>());
             }
+            if (i + myOrder >= words.length){
+                return;   
+            }
+            String next = words[i];
             myMap.get(wg).add(next);
         }
     }
