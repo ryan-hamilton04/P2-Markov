@@ -26,10 +26,10 @@ public class WordGram {
 	public WordGram(String[] source, int start, int size) {
 		myWords = new String[size];
 		for (int i = 0; i < size; i++){
-			myWords[i] = source[start + 1];
+			myWords[i] = source[start + i];
 		}
-		myToString = null;
-		myHash = 0;	
+		myToString = "";
+		myHash = -1;	
 	}
 
 
@@ -85,7 +85,7 @@ public class WordGram {
 	 */
 	@Override
 	public int hashCode() {
-		if (myHash == 0) {
+		if (myHash == -1) {
 			myHash = this.toString().hashCode();
 		}
 		return myHash;
@@ -116,7 +116,7 @@ public class WordGram {
 	 */
 	@Override
 	public String toString() {
-		if(myToString == null){
+		if(myToString.equals("")){
 			myToString = String.join(" ", myWords);
 		}
 		return myToString;
