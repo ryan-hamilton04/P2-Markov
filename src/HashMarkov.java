@@ -34,7 +34,7 @@ public class HashMarkov implements MarkovInterface {
             if (i + myOrder >= words.length){
                 return;   
             }
-            String next = words[i];
+            String next = words[i + myOrder];
             myMap.get(wg).add(next);
         }
     }
